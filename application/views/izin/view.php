@@ -40,7 +40,6 @@ $where = $this->uri->segment(6);
 
 <!-- Main content -->
 <section class="content">
- 
     <!-- Small boxes (Stat box) -->
     <!-- /.row -->
     <!-- Main row -->
@@ -123,22 +122,6 @@ $(function () {
 				$(this).prop("hidden", true);
 				}
 		});
-		$('.verif1').each(function() {
-			// Do something interesting
-			if((akses==1) || (akses==3)){
-				$(this).prop("hidden", false);
-				}else{
-				$(this).prop("hidden", true);
-				}
-		});
-		$('.verif2').each(function() {
-			// Do something interesting
-			if((akses==1 || akses==4)){
-				$(this).prop("hidden", false);
-				}else{
-				$(this).prop("hidden", true);
-				}
-		});
 		$("#cari").click(function(){
 			window.location.href = '<?=base_url('cuti')."/index/0/nomor/asc/";?>'+$("#katakunci").val();  
 		});
@@ -152,34 +135,6 @@ $(function () {
 				});
     		} else {
 				$.get( "<?=base_url('izin')?>/approve/"+id+"/0", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});	
-			}
-		});
-		$(".verif1").change(function() {
-			var id = $(this).attr('value');
-    		if(this.checked) {
-        		//Do stuff
-				//alert(id);
-				$.get( "<?=base_url('izin')?>/verif1/"+id+"/1", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});
-    		} else {
-				$.get( "<?=base_url('izin')?>/verif1/"+id+"/0", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});	
-			}
-		});
-		$(".verif2").change(function() {
-			var id = $(this).attr('value');
-    		if(this.checked) {
-        		//Do stuff
-				//alert(id);
-				$.get( "<?=base_url('izin')?>/verif2/"+id+"/1", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});
-    		} else {
-				$.get( "<?=base_url('izin')?>/verif2/"+id+"/0", function( data ) {
 				  //alert( "Data Loaded: " + data );
 				});	
 			}

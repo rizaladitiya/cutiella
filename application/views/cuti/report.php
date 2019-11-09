@@ -203,22 +203,6 @@ $(function () {		var akses;
 				$(this).prop("hidden", true);
 				}
 		});
-		$('.verif1').each(function() {
-			// Do something interesting
-			if((akses==1) || (akses==3)){
-				$(this).prop("hidden", false);
-				}else{
-				$(this).prop("hidden", true);
-				}
-		});
-		$('.verif2').each(function() {
-			// Do something interesting
-			if((akses==1 || akses==4)){
-				$(this).prop("hidden", false);
-				}else{
-				$(this).prop("hidden", true);
-				}
-		});
 	$('#dari,#hingga').datepicker({
       		autoclose: true,
 			format: 'yyyy-mm-dd'
@@ -234,34 +218,6 @@ $(function () {		var akses;
 				});
     		} else {
 				$.get( "<?=base_url('cuti')?>/approve/"+id+"/0", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});	
-			}
-		});
-		$(".verif1").change(function() {
-			var id = $(this).attr('value');
-    		if(this.checked) {
-        		//Do stuff
-				//alert(id);
-				$.get( "<?=base_url('cuti')?>/verif1/"+id+"/1", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});
-    		} else {
-				$.get( "<?=base_url('cuti')?>/verif1/"+id+"/0", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});	
-			}
-		});
-		$(".verif2").change(function() {
-			var id = $(this).attr('value');
-    		if(this.checked) {
-        		//Do stuff
-				//alert(id);
-				$.get( "<?=base_url('cuti')?>/verif2/"+id+"/1", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});
-    		} else {
-				$.get( "<?=base_url('cuti')?>/verif2/"+id+"/0", function( data ) {
 				  //alert( "Data Loaded: " + data );
 				});	
 			}

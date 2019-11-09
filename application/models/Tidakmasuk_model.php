@@ -113,7 +113,36 @@ function get_by_tanggal($from,$to){
 	$this->db->where('surattidakmasuk.tanggal <=', $to);
 	return $this->db->get();
 }
-
+function get_by_tanggal_user($from,$to,$user){
+	$select=array(
+				
+				'surattidakmasuk.id',
+				'surattidakmasuk.karyawan',
+				'karyawan.nama',
+				'karyawan.nip',
+				'karyawan.jabatan',
+				'karyawan.unitkerja',
+				'karyawan.awalkerja',
+				'karyawan.gelar',
+				'karyawan.pangkat',
+				'surattidakmasuk.nomor',
+				'surattidakmasuk.alasantidakmasuk',
+				'surattidakmasuk.tglkeluar',
+				'surattidakmasuk.atasan',
+				'surattidakmasuk.dikeluarkan',
+				'surattidakmasuk.approve',
+				'surattidakmasuk.verif1',
+				'surattidakmasuk.verif2',
+				'date(surattidakmasuk.tanggal) as tanggal'
+			);
+	$this->db->select($select);
+	$this->db->from($this->table_name);
+	$this->db->join($this->table_karyawan, 'surattidakmasuk.karyawan = karyawan.id', 'left');
+	$this->db->where('karyawan.id', $user);
+	$this->db->where('surattidakmasuk.tanggal >=', $from);
+	$this->db->where('surattidakmasuk.tanggal <=', $to);
+	return $this->db->get();
+}
 
 function get_paged_list($limit=10,$offset=0,$order_column='',$order_type='asc',$where=''){
 	$select=array(
@@ -141,6 +170,44 @@ function get_paged_list($limit=10,$offset=0,$order_column='',$order_type='asc',$
 	$this->db->from($this->table_name);
 	$this->db->limit($limit,$offset);
 	$this->db->join($this->table_karyawan, 'surattidakmasuk.karyawan = karyawan.id', 'inner');
+	if (empty($order_column)|| empty($order_type))
+	$this->db->order_by($this->primary_key,'desc');
+	else
+	$this->db->order_by($order_column,$order_type);
+	if(!empty($where)){
+		$this->db->like('nomor',$where);
+		$this->db->or_like('karyawan.nama',$where);
+	}
+	return $this->db->get();
+	//return $this->db->get($this->table_name,$limit,$offset);
+}
+function get_paged_list_user($limit=10,$offset=0,$order_column='',$order_type='asc',$where='',$user=''){
+	$select=array(
+				
+				'surattidakmasuk.id',
+				'surattidakmasuk.karyawan',
+				'karyawan.nama',
+				'karyawan.nip',
+				'karyawan.jabatan',
+				'karyawan.unitkerja',
+				'karyawan.awalkerja',
+				'karyawan.gelar',
+				'karyawan.pangkat',
+				'surattidakmasuk.nomor',
+				'surattidakmasuk.alasantidakmasuk',
+				'surattidakmasuk.tglkeluar',
+				'surattidakmasuk.atasan',
+				'surattidakmasuk.dikeluarkan',
+				'surattidakmasuk.approve',
+				'surattidakmasuk.verif1',
+				'surattidakmasuk.verif2',
+				'date(surattidakmasuk.tanggal) as tanggal'
+			);
+	$this->db->select($select);    
+	$this->db->from($this->table_name);
+	$this->db->limit($limit,$offset);
+	$this->db->join($this->table_karyawan, 'surattidakmasuk.karyawan = karyawan.id', 'inner');
+	$this->db->where('karyawan.id',$user);
 	if (empty($order_column)|| empty($order_type))
 	$this->db->order_by($this->primary_key,'desc');
 	else

@@ -34,7 +34,7 @@ class Auth extends CI_Controller {
          'user' => $row->user,
          'nama' => $row->nama,
 		 'email' => $row->email,
-		 'akses' => $row->akses
+		 'akses' => $row->aksesnama
        );
        $this->session->set_userdata('logged_in', $sess_array);
      }

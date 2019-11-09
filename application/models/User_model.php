@@ -7,10 +7,11 @@ class User_model extends CI_Model {
  	}
  	function login($user, $password)
  {
-   $this -> db -> select('id,user,nama,email,password,akses');
+   $this -> db -> select('user.id,user.user,user.nama,user.email,password,user_akses.nama as aksesnama');
    $this -> db -> from($this->table_name);
-   $this -> db -> where('user', $user);
-   $this -> db -> where('password', md5($password));
+   $this->db->join('user_akses', 'user_akses.id = user.akses', 'inner');
+   $this -> db -> where('user.user', $user);
+   $this -> db -> where('user.password', md5($password));
    $this -> db -> limit(1);
  
    $query = $this -> db -> get();

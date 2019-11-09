@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Tidakmasuk extends CI_Controller {
 	
 	private $limit=30;
+	private $id,$nama,$akses;
+	private $data=array();
 	function __construct(){
 		parent::__construct();		
 		error_reporting(0);
@@ -11,6 +13,15 @@ class Tidakmasuk extends CI_Controller {
 		$this->load->model(array('about_model','user_model','karyawan_model','tidakmasuk_model'));
 		$this->load->helper(array('url','form'));
 		$this->load->library('user_agent');
+		$sess = getsession();
+		$this->id = $sess->id;
+		$this->nama = $sess->nama;
+		$this->akses = $sess->akses;
+		
+		$this->data['id'] = $sess->id;
+		$this->data['user'] = $sess->user;
+		$this->data['email'] = $sess->nama;
+		$this->data['akses'] = $sess->akses;
 		
 		if(!$this->session->userdata('logged_in'))
    			
@@ -23,17 +34,20 @@ class Tidakmasuk extends CI_Controller {
 	
 	function index($offset=0,$order_column='id',$order_type='asc',$where=''){
 		
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
-		$data['akses'] = $this->session->userdata('logged_in')['akses'];
+		$data=$this->data;
 		$this->load->library(array('pagination','table'));
 		if (empty($offset)) $offset=0;
 		if (empty($order_column)) $order_column='id';
 		if (empty($order_type)) $order_type='asc';
 		//TODO: check for valid column
+		
+		if($this->akses=="admin"){
 		$alls=$this->tidakmasuk_model->get_paged_list($this->limit,
 		$offset,$order_column,$order_type,$where)->result();
+		}else{
+		$alls=$this->tidakmasuk_model->get_paged_list_user($this->limit,
+		$offset,$order_column,$order_type,$where,$this->id)->result();
+		}
 		$config['base_url']= site_url('tidakmasuk/index/');
 		$config['total_rows']=$this->tidakmasuk_model->count_all();
 		$config['per_page']=$this->limit;
@@ -68,8 +82,6 @@ class Tidakmasuk extends CI_Controller {
 		$new_order=($order_type=='asc'?'desc':'asc');
 		$this->table->set_heading(
 		'Print',
-		'Verif1',
-		'Verif2',
 		'Approve',
 		anchor('tidakmasuk/index/'.$offset.'/nomor/'.$new_order."/".$where,'Nomor'),
 		anchor('tidakmasuk/index/'.$offset.'/nama/'.$new_order."/".$where,'Nama'),
@@ -86,8 +98,6 @@ class Tidakmasuk extends CI_Controller {
 	foreach ($alls as $all){
 		$this->table->add_row(
 			anchor('cetak/tidakmasuk/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
-			'<input type="checkbox" name="verif1[]" id="verif1[]" value="'.$all->id.'" class="verif1" '.(($all->verif1==1)?' checked':'').' />',
-			'<input type="checkbox" name="verif2[]" id="verif2[]" value="'.$all->id.'" class="verif2" '.(($all->verif2==1)?' checked':'').' />',
 			'<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />',
 			$all->nomor,
 			$all->nama,
@@ -138,6 +148,8 @@ class Tidakmasuk extends CI_Controller {
 	}
 	public function add()
 	{
+		
+		$data=$this->data;
 		$tanggal=$this->input->post('tanggal');
 		$data['karyawans'] = $this->karyawan_model->get_by_all()->result();
 		if(!empty($id))
@@ -158,13 +170,11 @@ class Tidakmasuk extends CI_Controller {
 									);
 				
 			}
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
 		$this->load->view('tidakmasuk/add',$data);
 	}
 	function update(){
 		
+		$data=$this->data;
 		$data['karyawans'] = $this->karyawan_model->get_by_all()->result();
 		$alls=$this->tidakmasuk_model->get_by_id($this->uri->segment(3))->result();
 		foreach ($alls as $value) {
@@ -180,10 +190,6 @@ class Tidakmasuk extends CI_Controller {
 		}
 		
 		$data['tidakmasuk']=$hasil;
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
-		$data['akses'] = $this->session->userdata('logged_in')['akses'];
 		$this->load->view('tidakmasuk/add.php',$data);
 	}
 	
@@ -214,6 +220,7 @@ class Tidakmasuk extends CI_Controller {
 	{
 		$dari= $this->input->post('dari');
 		$hingga =  $this->input->post('hingga');
+		$data=$this->data;
 		$this->load->library(array('pagination','table'));
 		if(!empty($dari)){
 			$data['dari']=$dari;
@@ -225,7 +232,11 @@ class Tidakmasuk extends CI_Controller {
 		}else{
 			$data['hingga']=sekarang();
 		}
+		if($this->akses=="admin"){
 		$alls=$this->tidakmasuk_model->get_by_tanggal($data['dari'],$data['hingga'])->result();
+		}else{
+		$alls=$this->tidakmasuk_model->get_by_tanggal_user($data['dari'],$data['hingga'],$this->id)->result();
+			}
 		$config['base_url']= site_url('tidakmasuk/index/');
 		$config['total_rows']=$this->tidakmasuk_model->count_all();
 		$config['per_page']=$this->limit;
@@ -257,8 +268,6 @@ class Tidakmasuk extends CI_Controller {
 		$this->table->set_template($tmpl); 
 		$this->table->set_heading(
 		'Print',
-		'Verif1',
-		'Verif2',
 		'Approve',
 		'Nomor',
 		'Nama',
@@ -273,8 +282,6 @@ class Tidakmasuk extends CI_Controller {
 	foreach ($alls as $all){
 		$this->table->add_row(
 			anchor('cetak/tidakmasuk/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
-			'<input type="checkbox" name="verif1[]" id="verif1[]" value="'.$all->id.'" class="verif1" '.(($all->verif1==1)?' checked':'').' />',
-			'<input type="checkbox" name="verif2[]" id="verif2[]" value="'.$all->id.'" class="verif2" '.(($all->verif2==1)?' checked':'').' />',
 			'<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />',
 			$all->nomor,
 			$all->nama,
@@ -293,10 +300,6 @@ class Tidakmasuk extends CI_Controller {
 	function cetak(){
 		$id = $this->uri->segment(3);
 		$data['tidakmasuk']=$this->tidakmasuk_model->get_by_id($id)->result();
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
-		$data['akses'] = $this->session->userdata('logged_in')['akses'];
 		$this->load->view('tidakmasuk/cetak.php',$data);
 		
 	}
@@ -310,90 +313,6 @@ class Tidakmasuk extends CI_Controller {
 		$this->ciqrcode->generate($params);
 	}
 	
-	function em($word) {
-
-    $word = str_replace("@","%40",$word);
-    $word = str_replace("`","%60",$word);
-    $word = str_replace("¢","%A2",$word);
-    $word = str_replace("£","%A3",$word);
-    $word = str_replace("¥","%A5",$word);
-    $word = str_replace("|","%A6",$word);
-    $word = str_replace("«","%AB",$word);
-    $word = str_replace("¬","%AC",$word);
-    $word = str_replace("¯","%AD",$word);
-    $word = str_replace("º","%B0",$word);
-    $word = str_replace("±","%B1",$word);
-    $word = str_replace("ª","%B2",$word);
-    $word = str_replace("µ","%B5",$word);
-    $word = str_replace("»","%BB",$word);
-    $word = str_replace("¼","%BC",$word);
-    $word = str_replace("½","%BD",$word);
-    $word = str_replace("¿","%BF",$word);
-    $word = str_replace("À","%C0",$word);
-    $word = str_replace("Á","%C1",$word);
-    $word = str_replace("Â","%C2",$word);
-    $word = str_replace("Ã","%C3",$word);
-    $word = str_replace("Ä","%C4",$word);
-    $word = str_replace("Å","%C5",$word);
-    $word = str_replace("Æ","%C6",$word);
-    $word = str_replace("Ç","%C7",$word);
-    $word = str_replace("È","%C8",$word);
-    $word = str_replace("É","%C9",$word);
-    $word = str_replace("Ê","%CA",$word);
-    $word = str_replace("Ë","%CB",$word);
-    $word = str_replace("Ì","%CC",$word);
-    $word = str_replace("Í","%CD",$word);
-    $word = str_replace("Î","%CE",$word);
-    $word = str_replace("Ï","%CF",$word);
-    $word = str_replace("Ð","%D0",$word);
-    $word = str_replace("Ñ","%D1",$word);
-    $word = str_replace("Ò","%D2",$word);
-    $word = str_replace("Ó","%D3",$word);
-    $word = str_replace("Ô","%D4",$word);
-    $word = str_replace("Õ","%D5",$word);
-    $word = str_replace("Ö","%D6",$word);
-    $word = str_replace("Ø","%D8",$word);
-    $word = str_replace("Ù","%D9",$word);
-    $word = str_replace("Ú","%DA",$word);
-    $word = str_replace("Û","%DB",$word);
-    $word = str_replace("Ü","%DC",$word);
-    $word = str_replace("Ý","%DD",$word);
-    $word = str_replace("Þ","%DE",$word);
-    $word = str_replace("ß","%DF",$word);
-    $word = str_replace("à","%E0",$word);
-    $word = str_replace("á","%E1",$word);
-    $word = str_replace("â","%E2",$word);
-    $word = str_replace("ã","%E3",$word);
-    $word = str_replace("ä","%E4",$word);
-    $word = str_replace("å","%E5",$word);
-    $word = str_replace("æ","%E6",$word);
-    $word = str_replace("ç","%E7",$word);
-    $word = str_replace("è","%E8",$word);
-    $word = str_replace("é","%E9",$word);
-    $word = str_replace("ê","%EA",$word);
-    $word = str_replace("ë","%EB",$word);
-    $word = str_replace("ì","%EC",$word);
-    $word = str_replace("í","%ED",$word);
-    $word = str_replace("î","%EE",$word);
-    $word = str_replace("ï","%EF",$word);
-    $word = str_replace("ð","%F0",$word);
-    $word = str_replace("ñ","%F1",$word);
-    $word = str_replace("ò","%F2",$word);
-    $word = str_replace("ó","%F3",$word);
-    $word = str_replace("ô","%F4",$word);
-    $word = str_replace("õ","%F5",$word);
-    $word = str_replace("ö","%F6",$word);
-    $word = str_replace("÷","%F7",$word);
-    $word = str_replace("ø","%F8",$word);
-    $word = str_replace("ù","%F9",$word);
-    $word = str_replace("ú","%FA",$word);
-    $word = str_replace("û","%FB",$word);
-    $word = str_replace("ü","%FC",$word);
-    $word = str_replace("ý","%FD",$word);
-    $word = str_replace("þ","%FE",$word);
-    $word = str_replace("ÿ","%FF",$word);
-	$word = str_replace(" ","%20",$word);
-    return $word;
-	}
+	
 	
 }

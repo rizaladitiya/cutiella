@@ -128,7 +128,41 @@ function get_by_tanggal($from,$to){
 	$this->db->where('suratizin.tanggal <=', $to);
 	return $this->db->get();
 }
-
+function get_by_tanggal_user($from,$to,$user){
+	$select=array(
+				
+				'suratizin.id',
+				'suratizin.karyawan',
+				'karyawan.nama',
+				'karyawan.nip',
+				'karyawan.jabatan',
+				'karyawan.unitkerja',
+				'karyawan.awalkerja',
+				'karyawan.gelar',
+				'karyawan.pangkat',
+				'suratizin.nomor',
+				'suratizin.alasan',
+				'alasan_izin.nama as alasannama',
+				'suratizin.alasanizin',
+				'suratizin.tglkeluar',
+				'suratizin.dari',
+				'suratizin.hingga',
+				'suratizin.atasan',
+				'suratizin.dikeluarkan',
+				'suratizin.approve',
+				'suratizin.verif1',
+				'suratizin.verif2',
+				'date(suratizin.tanggal) as tanggal'
+			);
+	$this->db->select($select);
+	$this->db->from($this->table_name);
+	$this->db->join($this->table_karyawan, 'suratizin.karyawan = karyawan.id', 'left');
+	$this->db->join('alasan_izin', 'suratizin.alasan = alasan_izin.id', 'left');
+	$this->db->where('karyawan.id', $user);
+	$this->db->where('suratizin.tanggal >=', $from);
+	$this->db->where('suratizin.tanggal <=', $to);
+	return $this->db->get();
+}
 
 function get_paged_list($limit=10,$offset=0,$order_column='',$order_type='asc',$where=''){
 	$select=array(
@@ -161,6 +195,49 @@ function get_paged_list($limit=10,$offset=0,$order_column='',$order_type='asc',$
 	$this->db->limit($limit,$offset);
 	$this->db->join($this->table_karyawan, 'suratizin.karyawan = karyawan.id', 'inner');
 	$this->db->join('alasan_izin', 'suratizin.alasan = alasan_izin.id', 'left');
+	if (empty($order_column)|| empty($order_type))
+	$this->db->order_by($this->primary_key,'desc');
+	else
+	$this->db->order_by($order_column,$order_type);
+	if(!empty($where)){
+		$this->db->like('nomor',$where);
+		$this->db->or_like('karyawan.nama',$where);
+	}
+	return $this->db->get();
+	//return $this->db->get($this->table_name,$limit,$offset);
+}
+function get_paged_list_user($limit=10,$offset=0,$order_column='',$order_type='asc',$where='',$user=''){
+	$select=array(
+				
+				'suratizin.id',
+				'suratizin.karyawan',
+				'karyawan.nama',
+				'karyawan.nip',
+				'karyawan.jabatan',
+				'karyawan.unitkerja',
+				'karyawan.awalkerja',
+				'karyawan.gelar',
+				'karyawan.pangkat',
+				'suratizin.nomor',
+				'suratizin.alasan',
+				'alasan_izin.nama as alasannama',
+				'suratizin.alasanizin',
+				'suratizin.tglkeluar',
+				'suratizin.dari',
+				'suratizin.hingga',
+				'suratizin.atasan',
+				'suratizin.dikeluarkan',
+				'suratizin.approve',
+				'suratizin.verif1',
+				'suratizin.verif2',
+				'date(suratizin.tanggal) as tanggal'
+			);
+	$this->db->select($select);    
+	$this->db->from($this->table_name);
+	$this->db->limit($limit,$offset);
+	$this->db->join($this->table_karyawan, 'suratizin.karyawan = karyawan.id', 'inner');
+	$this->db->join('alasan_izin', 'suratizin.alasan = alasan_izin.id', 'left');
+	$this->db->where('karyawan.id',$user);
 	if (empty($order_column)|| empty($order_type))
 	$this->db->order_by($this->primary_key,'desc');
 	else
