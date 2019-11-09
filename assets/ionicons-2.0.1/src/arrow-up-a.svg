@@ -1,0 +1,10 @@
+atch Mode, enabling large email lists to be broken into small
+BCC batches.</li>
+<li>Email Debugging tools</li>
+</ul>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#using-the-email-library" id="id1">Using the Email Library</a><ul>
+<li><a class="reference internal" href="#sending-email" id="id2">Sending Email</a></li>
+<li><a class="reference internal" href="#setting-email-preferences" id="id3">Setting Email Preferences</a><ul>
+<li><a class="reference internal" href="#setting-email-preferences-in-a-config-file" id="id4">Setting 

@@ -1,0 +1,17 @@
+" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array list of accepted character sets</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array</td>
+</tr>
+</tbody>
+</table>
+<p>Returns an array of character sets accepted by the user agent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CI_User_agent::parse">
+<code class="descn

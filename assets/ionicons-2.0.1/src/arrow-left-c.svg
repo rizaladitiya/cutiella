@@ -1,0 +1,28 @@
+			$message = preg_match('/<message>(.*?)<\/message>/is', $this->response, $match)
+				? trim($match[1])
+				: 'An unknown error was encountered';
+			$this->set_error($message);
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Extract Trackback URLs
+	 *
+	 * This function lets multiple trackbacks be sent.
+	 * It takes a string of URLs (separated by comma or
+	 * space) and puts each URL into an array
+	 *
+	 * @param	string
+	 * @return	string
+	 */
+	public function extract_urls($urls)
+	{
+		// Remove the pesky white space and replace with a comma, then replace doubles.
+		$urls = str_replace(',,', ',', preg_replace('/\s*(\S+)\s*/', '\\1,', $urls));
+
+		// Break into an array via commas and remove duplic

@@ -1,0 +1,15 @@
+e">
+      
+    </li>
+    <div style="float:right;margin-left:5px;" id="closeMe">
+      <img title="Classic Layout" alt="classic layout" src="data:image/gif;base64,R0lGODlhFAAUAJEAAAAAADMzM////wAAACH5BAUUAAIALAAAAAAUABQAAAImlI+py+0PU5gRBRDM3DxbWoXis42X13USOLauUIqnlsaH/eY6UwAAOw==" />
+    </div>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="upgrading-from-3-1-5-to-3-1-6">
+<h1>Upgrading from 3.1.5 to 3.1.6<a class="headerlink" href="#upgrading-from-3-1-5-to-3-1-6" title="Permalink to this headline">¶</a></h1>
+<p>Before performing an update you should take your site offline by
+replacing the index.php file with a static one.<

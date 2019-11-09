@@ -1,0 +1,25 @@
+r class="row-even"><td><strong>smtp_keepalive</strong></td>
+<td>FALSE</td>
+<td>TRUE or FALSE (boolean)</td>
+<td>Enable persistent SMTP connections.</td>
+</tr>
+<tr class="row-odd"><td><strong>smtp_crypto</strong></td>
+<td>No Default</td>
+<td>tls or ssl</td>
+<td>SMTP Encryption</td>
+</tr>
+<tr class="row-even"><td><strong>wordwrap</strong></td>
+<td>TRUE</td>
+<td>TRUE or FALSE (boolean)</td>
+<td>Enable word-wrap.</td>
+</tr>
+<tr class="row-odd"><td><strong>wrapchars</strong></td>
+<td>76</td>
+<td>&#160;</td>
+<td>Character count to wrap at.</td>
+</tr>
+<tr class="row-even"><td><strong>mailtype</strong></td>
+<td>text</td>
+<td>text or html</td>
+<td>Type of mail. If you send HTML email you must send it as a complete web
+page. Make sure you don’t have any relative links or relative

@@ -1,0 +1,11 @@
+/div>
+</div>
+<p>You can also use a URL:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">attach</span><span class="p">(</span><span class="s1">&#39;http://example.com/filename.pdf&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If you’d like to use a custom file name, you can use the third parameter:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">attach</span><span class="p">(</span><span class="s1">&#39;filename.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;attachment&#39;</span><span class="p">,</span> <span class="s1">&#39;report.pdf&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If

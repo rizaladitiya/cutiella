@@ -1,0 +1,11 @@
+"CI_Email">
+<em class="property">class </em><code class="descname">CI_Email</code><a class="headerlink" href="#CI_Email" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CI_Email::from">
+<code class="descname">from</code><span class="sig-paren">(</span><em>$from</em><span class="optional">[</span>, <em>$name = ''</em><span class="optional">[</span>, <em>$return_path = NULL</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Email::from" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$from</strong> (<em>string</em>) – “From” e-mail addr

@@ -1,0 +1,16 @@
+bs-aside">
+      
+    </li>
+    <div style="float:right;margin-left:5px;" id="closeMe">
+      <img title="Classic Layout" alt="classic layout" src="data:image/gif;base64,R0lGODlhFAAUAJEAAAAAADMzM////wAAACH5BAUUAAIALAAAAAAUABQAAAImlI+py+0PU5gRBRDM3DxbWoXis42X13USOLauUIqnlsaH/eY6UwAAOw==" />
+    </div>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="upgrading-from-beta-1-0-to-beta-1-1">
+<h1>Upgrading From Beta 1.0 to Beta 1.1<a class="headerlink" href="#upgrading-from-beta-1-0-to-beta-1-1" title="Permalink to this headline">¶</a></h1>
+<p>To upgrade to Beta 1.1 please perform the following steps:</p>
+<div class="section" id="step-1-replace-your-index-file">
+<h2>Step 1: Replace your index file<a class="headerlink" href="#step-1-replace-yo

@@ -1,0 +1,41 @@
+s->simple_query('ROLLBACK');
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Platform-dependant string escape
+	 *
+	 * @param	string
+	 * @return	string
+	 */
+	protected function _escape_str($str)
+	{
+		return sqlite_escape_string($str);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Affected Rows
+	 *
+	 * @return	int
+	 */
+	public function affected_rows()
+	{
+		return sqlite_changes($this->conn_id);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Insert ID
+	 *
+	 * @return	int
+	 */
+	public function insert_id()
+	{
+		return sqlite_last_insert_rowid($this->conn_id);
+	}
+
+	// ----------------------

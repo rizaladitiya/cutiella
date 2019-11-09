@@ -1,0 +1,13 @@
+e">Returns:</th><td class="field-body">Detected operating system or an empty string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+<p>Returns a string containing the platform viewing your site (Linux, Windows, OS X, etc.).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CI_User_agent::referrer">
+<code class="descname">referrer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_User_agent::referrer" title="Permalink to this definition">¶</a></dt>
+<dd><table class="d

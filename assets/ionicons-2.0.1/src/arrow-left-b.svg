@@ -1,0 +1,30 @@
+charset;
+
+		$data = 'url='.rawurlencode($url).'&title='.rawurlencode($title).'&blog_name='.rawurlencode($blog_name)
+			.'&excerpt='.rawurlencode($excerpt).'&charset='.rawurlencode($charset);
+
+		// Send Trackback(s)
+		$return = TRUE;
+		if (count($ping_url) > 0)
+		{
+			foreach ($ping_url as $url)
+			{
+				if ($this->process($url, $data) === FALSE)
+				{
+					$return = FALSE;
+				}
+			}
+		}
+
+		return $return;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Receive Trackback  Data
+	 *
+	 * This function simply validates the incoming TB data.
+	 * It returns FALSE on failure and TRUE on success.
+	 * If the data is valid it is set to the $this->data array
+	 * so that it can be insert

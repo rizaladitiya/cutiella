@@ -1,0 +1,13 @@
+>]</span>  <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Lastly, add the following new item to the config file (and edit the
+option if needed):</p>
+<div class="highlight-ci"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">|------------------------------------------------</span>
+<span class="cm">| URI PROTOCOL</span>
+<span class="cm">|------------------------------------------------</span>
+<span class="cm">|</span>
+<span class="cm">| This item determines which server global</span>
+<span class="cm">| should be used to retrieve the URI string. The</span>
+<span class="cm">| defa

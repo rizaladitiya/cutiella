@@ -1,0 +1,14 @@
+a">message</span><span class="p">(</span><span class="s1">&#39;&lt;img src=&quot;cid:&#39;</span><span class="o">.</span> <span class="nv">$cid</span> <span class="o">.</span><span class="s1">&#39;&quot; alt=&quot;photo1&quot; /&gt;&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Content-ID for each e-mail must be re-created for it to be unique.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="CI_Email::print_debugger">
+<code class="descname">print_debugger</code><span class="sig-paren">(</span><span class="optional">[</span><em>$include = array('headers'</em>, <em>'subject'</em>, <em>'body')</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" 

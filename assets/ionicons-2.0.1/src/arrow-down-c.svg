@@ -1,0 +1,12 @@
+">-&gt;</span><span class="na">agent</span><span class="o">-&gt;</span><span class="na">is_mobile</span><span class="p">())</span>
+<span class="p">{</span>
+        <span class="nv">$agent</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">agent</span><span class="o">-&gt;</span><span class="na">mobile</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+        <span class="nv">$agent</span> <span class="o">=</span> <span class="s1">&#39;Unidentified User Agent&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">echo</span> <span class="nv">$agent</span><span class="p">;</span>
+
+<span class="k">echo</span> <span class="nv">$this</span>

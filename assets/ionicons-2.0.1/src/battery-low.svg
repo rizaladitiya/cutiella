@@ -1,0 +1,14 @@
+pan>
+</pre></div>
+</div>
+<p>This method will automatically clear all parameters if the request was
+successful. To stop this behaviour pass FALSE:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="k">FALSE</span><span class="p">))</span>
+<span class="p">{</span>
+        <span class="c1">// Parameters won&#39;t be cleared</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to use the <code class="docuti

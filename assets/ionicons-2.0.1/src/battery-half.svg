@@ -1,0 +1,13 @@
+y"><p class="first last">CI_Email</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Initializes all the email variables to an empty state. This method
+is intended for use if you run the email sending method in a loop,
+permitting the data to be reset between cycles.</p>
+<div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$name</span> <span class="o">=&gt;</span> <span class="nv">$address</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">clear</span><span class="p">();</span>
+
+ 

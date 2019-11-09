@@ -1,0 +1,18 @@
+ class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$str</strong> (<em>string</em>) – Alternative e-mail message body</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">CI_Email instance (method chaining)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">CI_Email</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Sets the alternative e-mail message body:</p>
+<div class="highlight-ci"><div class="hig
