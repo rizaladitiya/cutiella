@@ -33,6 +33,7 @@ class Cuti extends CI_Controller {
 	
 	function index($offset=0,$order_column='id',$order_type='asc',$where=''){
 		$data=$this->data;
+		$data['akses']=$this->akses;
 		$data['tembusans'] = $this->tembusan_model->get_by_all()->result();
 		$this->load->library(array('pagination','table'));
 		if (empty($offset)) $offset=0;
@@ -165,6 +166,7 @@ class Cuti extends CI_Controller {
 	}
 	public function add()
 	{
+		$data['akses']=$this->akses;
 		$data=$this->data;
 		$dari=$this->input->post('dari');
 		$hingga=$this->input->post('hingga');
@@ -202,6 +204,7 @@ class Cuti extends CI_Controller {
 	function update(){
 		
 		$data=$this->data;
+		$data['akses']=$this->akses;
 		$data['karyawans'] = $this->karyawan_model->get_by_all()->result();
 		$data['macamcutis'] = $this->cuti_model->get_by_macamcuti()->result();
 		$data['tembusans'] = $this->tembusan_model->get_by_all()->result();
@@ -254,6 +257,8 @@ class Cuti extends CI_Controller {
 	}
 	public function report()
 	{
+		$data=$this->data;
+		$data['akses']=$this->akses;
 		$dari= $this->input->post('dari');
 		$hingga =  $this->input->post('hingga');
 		$data['tembusans'] = $this->tembusan_model->get_by_all()->result();

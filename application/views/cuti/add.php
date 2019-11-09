@@ -25,6 +25,9 @@ if($akses=='admin'){
 	$this->load->view('template/sidebaruser');		
 }
 
+$sess = getsession();
+$id = $sess->id;
+$nama = $sess->nama;
 ?>
 
 <!-- Content Header (Page header) -->

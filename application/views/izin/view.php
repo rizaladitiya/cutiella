@@ -110,13 +110,13 @@ $this->load->view('template/js');
 
 <script type="text/javascript">
 $(function () {
-			var akses;
-		akses = <?=$akses;?>
+		var akses;
+		akses = '<?=$akses;?>';
 		
 
 		$('.minimal').each(function() {
 			// Do something interesting
-			if((akses==1) || (akses==5)){
+			if((akses=='admin')){
 				$(this).prop("hidden", false);
 				}else{
 				$(this).prop("hidden", true);

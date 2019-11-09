@@ -49,7 +49,7 @@ class Auth extends CI_Controller {
 		 {
 		   $sess_array = array(
 			 'id' => $row->id,
-			 'user' => $row->user,
+			 'user' => $row->nama,
 			 'nama' => $row->nama,
 			 'email' => $row->email,
 			 'akses' => 'user'

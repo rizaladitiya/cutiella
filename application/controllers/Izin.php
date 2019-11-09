@@ -34,6 +34,7 @@ class Izin extends CI_Controller {
 	
 	function index($offset=0,$order_column='id',$order_type='asc',$where=''){
 		$data=$this->data;
+		$data['akses']=$this->akses;
 		$this->load->library(array('pagination','table'));
 		if (empty($offset)) $offset=0;
 		if (empty($order_column)) $order_column='id';
@@ -151,6 +152,7 @@ class Izin extends CI_Controller {
 	public function add()
 	{
 		$data=$this->data;
+		$data['akses']=$this->akses;
 		$tanggal=$this->input->post('tanggal');
 		$data['karyawans'] = $this->karyawan_model->get_by_all()->result();
 		$data['alasans'] = $this->izin_model->get_alasan_izin()->result();
@@ -227,6 +229,7 @@ class Izin extends CI_Controller {
 	public function report()
 	{
 		$data=$this->data;
+		$data['akses']=$this->akses;
 		$dari= $this->input->post('dari');
 		$hingga =  $this->input->post('hingga');
 		$this->load->library(array('pagination','table'));

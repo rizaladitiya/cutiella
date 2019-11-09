@@ -191,13 +191,14 @@ $this->load->view('template/js');
 <!-- iCheck -->
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/iCheck/icheck.min.js') ?>" type="text/javascript"></script>
 <script type="text/javascript">
-$(function () {		var akses;
-		akses = <?=$akses;?>
+$(function () {		
+		var akses;
+		akses = '<?=$akses;?>';
 		
 
 		$('.minimal').each(function() {
 			// Do something interesting
-			if((akses==1) || (akses==5)){
+			if((akses=='admin')){
 				$(this).prop("hidden", false);
 				}else{
 				$(this).prop("hidden", true);
