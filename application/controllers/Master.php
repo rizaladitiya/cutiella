@@ -11,6 +11,15 @@ class Master extends CI_Controller {
 		$this->load->helper(array('url','form'));
 		$this->load->library('user_agent');
 		
+		$sess = getsession();
+		$this->id = $sess->id;
+		$this->nama = $sess->nama;
+		$this->akses = $sess->akses;
+		
+		$this->data['id'] = $sess->id;
+		$this->data['user'] = $sess->user;
+		$this->data['email'] = $sess->nama;
+		$this->data['akses'] = $sess->akses;
 		if(!$this->session->userdata('logged_in'))
    			
    		{
@@ -22,10 +31,8 @@ class Master extends CI_Controller {
 	
 	public function index()
 	{
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
-		$data['id'] = $this->session->userdata('logged_in')['id'];
+		
+		$data=$this->data;
 		$this->load->view('cuti/add',$data);
 	}
 	public function save()
@@ -60,6 +67,7 @@ class Master extends CI_Controller {
 	}
 	public function karyawanupdate()
 	{
+		$data=$this->data;
 		$id=$this->uri->segment(3);
 		if(!empty($id)){
 		
@@ -73,31 +81,29 @@ class Master extends CI_Controller {
 										'jabatan'=>$value->jabatan,
 										'unitkerja'=>$value->unitkerja,
 										'gelar'=>$value->gelar,
+										'email'=>$value->email,
 										'pangkat'=>$value->pangkat
 									);
 			}
 		$data['karyawan'] = $hasil;
 		}
 		
-			
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
+		
 		//print_r($data);
 		$this->load->view('master/karyawanupdate',$data);
 	}
 	public function karyawan()
 	{
+		$data=$this->data;
 		$data['karyawans'] = $this->karyawan_model->get_by_all()->result();
 		
-			
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
+		
 		$this->load->view('master/karyawan',$data);
 	}
 	public function karyawansave()
 	{
+		$password=$this->input->post('password');
+		if(empty($password)){
 		$karyawan=array(
 						'nama'=>$this->input->post('nama'),
 						'nip'=>$this->input->post('nip'),
@@ -105,8 +111,22 @@ class Master extends CI_Controller {
 						'jabatan'=>$this->input->post('jabatan'),
 						'unitkerja'=>$this->input->post('unitkerja'),
 						'gelar'=>$this->input->post('gelar'),
+						'email'=>$this->input->post('email'),
 						'pangkat'=>$this->input->post('pangkat')
 						);
+		}else{
+		$karyawan=array(
+						'nama'=>$this->input->post('nama'),
+						'nip'=>$this->input->post('nip'),
+						'awalkerja'=>$this->input->post('awalkerja'),
+						'jabatan'=>$this->input->post('jabatan'),
+						'unitkerja'=>$this->input->post('unitkerja'),
+						'gelar'=>$this->input->post('gelar'),
+						'email'=>$this->input->post('email'),
+						'password'=>md5($password),
+						'pangkat'=>$this->input->post('pangkat')
+						);
+		}
 		if($this->input->post('id')==0){
 			$this->karyawan_model->add($karyawan);
 		}else{
@@ -131,15 +151,16 @@ class Master extends CI_Controller {
 	
 	public function macamcuti()
 	{
+		$data=$this->data;
 		$data['macamcutis'] = $this->cuti_model->get_by_macamcuti()->result();
 			
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
+		
+		
 		$this->load->view('master/macamcuti',$data);
 	}
 	public function macamcutiupdate()
 	{
+		$data=$this->data;
 		$id=$this->uri->segment(3);
 		if(!empty($id)){
 		
@@ -154,10 +175,8 @@ class Master extends CI_Controller {
 		$data['macamcuti'] = $hasil;
 		}
 		
-			
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
+		
+		
 		//print_r($data);
 		$this->load->view('master/macamcutiupdate',$data);
 	}
@@ -192,15 +211,16 @@ class Master extends CI_Controller {
 	
 	public function tembusan()
 	{
+		$data=$this->data;
 		$data['tembusans'] = $this->tembusan_model->get_by_all()->result();
 			
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
+		
+		
 		$this->load->view('master/tembusan',$data);
 	}
 	public function tembusanupdate()
 	{
+		$data=$this->data;
 		$id=$this->uri->segment(3);
 		if(!empty($id)){
 		
@@ -214,10 +234,8 @@ class Master extends CI_Controller {
 		$data['tembusan'] = $hasil;
 		}
 		
-			
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
+		
+		
 		//print_r($data);
 		$this->load->view('master/tembusanupdate',$data);
 	}

@@ -291,6 +291,7 @@ $(function () {
 			   if($('#id').val()==0)
 			   {
 				   $('#formizin')[0].reset();
+				   window.location.href = '<?=site_url('izin/');?>';
 			   } else {
 					window.location.href = '<?=$this->agent->referrer();?>';  
 				}

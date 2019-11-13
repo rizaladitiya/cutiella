@@ -40,8 +40,8 @@ $this->load->view('template/sidebar');
 
 <!-- Main content -->
 <section class="content">
-<form action="<?=base_url('master/karyawansave');?>" method="post" id="formcuti">
- <section class="col-lg-8 connectedSortable">
+ <form action="<?=base_url('master/karyawansave');?>" method="post" id="formcuti">
+
         <div class="alert alert-success" id="success-alert" style="display:none">
     		<button type="button" class="close" data-dismiss="alert">x</button>
     		Data Berhasil Disimpan.
@@ -118,6 +118,16 @@ $this->load->view('template/sidebar');
                     <label>Unit Kerja</label>
                       		    <input name="unitkerja" type="text" class="form-control pull-right" id="unitkerja" value="<?=(isset($karyawan->unitkerja))?$karyawan->unitkerja:'';?>"/>
                		  </div>
+                      <div class="col-xs-4">
+                    <label>Email</label>
+                      		    <input name="email" type="text" class="form-control pull-right" id="email" value="<?=(isset($karyawan->email))?$karyawan->email:'';?>"/>
+               		  </div>
+                    </div>
+                    <div class="row">
+                   	  <div class="col-xs-6">
+                    <label>Password</label>
+                   		      <input name="password" type="password" class="form-control" id="password" value="" placeholder="Kosongi jika password tetap..."/>
+               		  </div>
                     </div>
                   </div>
                        <!-- Loading (remove the following to stop the loading)-->
@@ -131,9 +141,8 @@ $this->load->view('template/sidebar');
                     <input name="id" type="hidden" id="id" value="<?=(isset($karyawan->id))?$karyawan->id:0;?>" />
                 </div>
             </div>
-                </div>
                 
-       
+       		</div>
             </div><!-- /.nav-tabs-custom -->
 
 
@@ -143,10 +152,8 @@ $this->load->view('template/sidebar');
             <!-- quick email widget -->
           
 </form>
-        </section>
+
 </section><!-- /.content -->
-
-
 <?php
 $this->load->view('template/js');
 ?>

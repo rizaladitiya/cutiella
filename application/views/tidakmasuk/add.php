@@ -253,6 +253,7 @@ $(function () {
 			   if($('#id').val()==0)
 			   {
 				   $('#formtidakmasuk')[0].reset();
+				   window.location.href = '<?=site_url('tidakmasuk/');?>';
 			   } else {
 					window.location.href = '<?=$this->agent->referrer();?>';  
 				}

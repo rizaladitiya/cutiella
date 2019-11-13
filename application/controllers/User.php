@@ -7,7 +7,15 @@ class User extends CI_Controller {
 		parent::__construct();		
 		$this->load->model(array('about_model','user_model'));
 		$this->load->helper(array('url','form'));
+		$sess = getsession();
+		$this->id = $sess->id;
+		$this->nama = $sess->nama;
+		$this->akses = $sess->akses;
 		
+		$this->data['id'] = $sess->id;
+		$this->data['user'] = $sess->user;
+		$this->data['email'] = $sess->nama;
+		$this->data['akses'] = $sess->akses;
 		if(!$this->session->userdata('logged_in'))
    			
    		{
@@ -19,10 +27,8 @@ class User extends CI_Controller {
 	
 	public function index()
 	{
-		$data['nama'] = $this->session->userdata('logged_in')['nama'];
-		$data['user'] = $this->session->userdata('logged_in')['user'];
-		$data['email'] = $this->session->userdata('logged_in')['email'];
-		$data['id'] = $this->session->userdata('logged_in')['id'];
+		
+		$data=$this->data;
 		$this->load->view('user',$data);
 	}
 	public function save()

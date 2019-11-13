@@ -239,6 +239,8 @@ $this->load->view('template/js');
 
 <script type="text/javascript">
 $(function () {
+	var sisa=0;
+	
 		$('.select2').select2();
 		$('#dari,#hingga,#tglkeluar').datepicker({
       		autoclose: true,
@@ -246,10 +248,46 @@ $(function () {
 			immediateUpdates: true,
             todayHighlight: true
     	});
+		$('.select2').on('select2:select', function (e) {
+			var data = e.params.data;
+			id = data.id;
+			sisa = data.id;
+		// Do something here.
+		        $.ajax({
+				url: '<?=base_url('cuti/sisacuti');?>',
+				type: 'post',
+				data: {"id": id},
+				dataType: 'text',
+				success: function( data, textStatus, jQxhr ){
+					$("#lama").attr("placeholder", "Sisa " + data + " hari");
+				},
+				error: function( jqXhr, textStatus, errorThrown ){
+					console.log( errorThrown );
+					alert(errorThrown);
+				}
+			});
+		});
 		
-		
+	$.ajax({
+				url: '<?=base_url('cuti/sisacuti');?>',
+				type: 'post',
+				data: {"id": $('#karyawan').val()},
+				dataType: 'text',
+				success: function( data, textStatus, jQxhr ){
+					$("#lama").attr("placeholder", "Sisa " + data + " hari");
+					sisa = data;
+				},
+				error: function( jqXhr, textStatus, errorThrown ){
+					console.log( errorThrown );
+					alert(errorThrown);
+				}
+	});	
 	// Bind to the submit event of our form
 	$("#formcuti").submit(function(event){
+		if($('#lama').val()>sisa){
+			alert('jatah cuti habis');
+			return false;
+		}
 		if($('#dari').val()==""){
 			alert('lengkapi data');
 			return false;
@@ -285,6 +323,7 @@ $(function () {
 			   if($('#id').val()==0)
 			   {
 				   $('#formcuti')[0].reset();
+				   window.location.href = '<?=site_url('cuti/');?>';
 			   } else {
 					window.location.href = '<?=$this->agent->referrer();?>';  
 				}

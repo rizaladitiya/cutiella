@@ -22,6 +22,7 @@ function get_by_all(){
 				'jabatan',
 				'gelar',
 				'pangkat',
+				'email',
 				'awalkerja'
 			);
 	$this->db->select($select);    
@@ -40,6 +41,7 @@ function get_by_last(){
 				'jabatan',
 				'gelar',
 				'pangkat',
+				'email',
 				'awalkerja'
 			);
 	$this->db->select($select);    
@@ -58,6 +60,7 @@ function get_by_id($id){
 				'jabatan',
 				'gelar',
 				'pangkat',
+				'email',
 				'awalkerja'
 			);
 	$this->db->select($select);    

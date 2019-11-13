@@ -172,6 +172,7 @@ if(!empty($cuti)){
     <td colspan="3">1. CUTI TAHUNAN</td>
     <td>2. CUTI BESAR</td>
     <td align="center"><?php
+	if($value->macamcuti==4){
 	if($this->cuti_model->get_by_total_cuti(date('Y'),4,$value->id)->num_rows()>=1){
     $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),4,$value->id)->row()->total); 
 		
@@ -181,6 +182,7 @@ if(!empty($cuti)){
 		}
 	$jatah = round($this->cuti_model->get_macamcuti_by_id(4)->row()->lama);
 		echo $jatah-$ambil;
+	}
 	?></td>
   </tr>
   <tr>
@@ -190,6 +192,7 @@ if(!empty($cuti)){
     <td width="45%">3. CUTI SAKIT</td>
     <td width="18%" align="center">
 	<?php
+	if($value->macamcuti==2){
 	if($this->cuti_model->get_by_total_cuti(date('Y'),2,$value->id)->num_rows()>=1){
     $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),2,$value->id)->row()->total); 
 		
@@ -199,23 +202,26 @@ if(!empty($cuti)){
 		}
 	$jatah = round($this->cuti_model->get_macamcuti_by_id(2)->row()->lama);
 		echo $jatah-$ambil;
+	}
 	?></td>
   </tr>
   <tr>
     <td>N-2</td>
     <td align="center"><?php
+	if($value->macamcuti==1){
     if($this->cuti_model->get_by_total_cuti(date('Y', strtotime('-1 year')),1,$value->id)->num_rows()>=1){
     $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$value->id)->row()->total); }else{
 		$ambil=0;
 		}
 		$jatah = round($this->cuti_model->get_macamcuti_by_id(1)->row()->lama);
 		echo $jatah-$ambil;
-		
+	}
 	
 	?></td>
     <td>&nbsp;</td>
     <td>4. CUTI MELAHIRKAN</td>
     <td align="center"><?php
+	if($value->macamcuti==5){
 	if($this->cuti_model->get_by_total_cuti(date('Y'),5,$value->id)->num_rows()>=1){
     $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),5,$value->id)->row()->total); 
 		
@@ -225,11 +231,13 @@ if(!empty($cuti)){
 		}
 	$jatah = round($this->cuti_model->get_macamcuti_by_id(5)->row()->lama);
 		echo $jatah-$ambil;
+	}
 	?></td>
   </tr>
   <tr>
     <td>N-1</td>
     <td align="center"><?php
+	if($value->macamcuti==1){
 	if($this->cuti_model->get_by_total_cuti(date('Y', strtotime('-1 year')),1,$value->id)->num_rows()>=1){
     $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$value->id)->row()->total); 
 	}else{
@@ -238,11 +246,12 @@ if(!empty($cuti)){
 		$jatah = round($this->cuti_model->get_macamcuti_by_id(1)->row()->lama);
 		echo $jatah-$ambil;
 		
-	
+	}
 	?></td>
     <td>&nbsp;</td>
     <td>5. CUTI KARENA ALASAN PENTING</td>
     <td align="center"><?php
+	if($value->macamcuti==3){
 	if($this->cuti_model->get_by_total_cuti(date('Y'),3,$value->id)->num_rows()>=1){
     $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),3,$value->id)->row()->total); 
 		
@@ -252,11 +261,13 @@ if(!empty($cuti)){
 		}
 	$jatah = round($this->cuti_model->get_macamcuti_by_id(3)->row()->lama);
 		echo $jatah-$ambil;
+	}
 	?></td>
   </tr>
   <tr>
     <td>N</td>
     <td align="center"><?php
+	if($value->macamcuti==1){
 	if($this->cuti_model->get_by_total_cuti(date('Y'),1,$value->id)->num_rows()>=1){
     $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$value->id)->row()->total); 
 		
@@ -266,10 +277,12 @@ if(!empty($cuti)){
 		}
 	$jatah = round($this->cuti_model->get_macamcuti_by_id(1)->row()->lama);
 		echo $jatah-$ambil;
+	}
 	?></td>
     <td>&nbsp;</td>
     <td>6. CUTI DILUAR TANGGUNGAN NEGARA</td>
     <td align="center"><?php
+	if($value->macamcuti==6){
 	if($this->cuti_model->get_by_total_cuti(date('Y'),6,$value->id)->num_rows()>=1){
     $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),6,$value->id)->row()->total); 
 		
@@ -279,6 +292,7 @@ if(!empty($cuti)){
 		}
 	$jatah = round($this->cuti_model->get_macamcuti_by_id(6)->row()->lama);
 		echo $jatah-$ambil;
+	}
 	?></td>
   </tr>
 </table>

@@ -232,6 +232,18 @@ class Cuti extends CI_Controller {
 		$this->load->view('cuti/add.php',$data);
 	}
 	
+	public function sisacuti()
+	{
+		$id = $this->input->post('id');
+		if($this->cuti_model->get_by_total_cuti(date('Y'),1,$value->id)->num_rows()>=1){
+    		$ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$id)->row()->total); 
+	}else{
+		$ambil=0;
+		}
+	$jatah = round($this->cuti_model->get_macamcuti_by_id(1)->row()->lama);
+		echo $jatah-$ambil;
+	}
+	
 	public function approve()
 	{
 		$acc = $this->uri->segment(4);
