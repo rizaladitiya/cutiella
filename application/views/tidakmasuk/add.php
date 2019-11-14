@@ -152,6 +152,7 @@ $nama = $sess->nama;
                 </div>
                 <div class="box-footer clearfix">
                     <button class="pull-right btn btn-default" id="sendEmail">Simpan <i class="fa fa-save"></i></button>
+                    <button class="pull-right btn btn-default" id="cancel">Batal <i class="fa fa-close"></i></button>
                     <input name="id" type="hidden" id="id" value="<?=(isset($tidakmasuk->id))?$tidakmasuk->id:0;?>" />
                 </div>
             </div>
@@ -211,6 +212,10 @@ $this->load->view('template/js');
 
 <script type="text/javascript">
 $(function () {
+		$( "#cancel" ).click(function() {
+		  window.location.href = '<?=$this->agent->referrer();?>'; 
+		  return false;
+		});
 		$('.select2').select2();
 		$('#tanggal,#tglkeluar').datepicker({
       		autoclose: true,

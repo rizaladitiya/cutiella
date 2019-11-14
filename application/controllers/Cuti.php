@@ -235,7 +235,7 @@ class Cuti extends CI_Controller {
 	public function sisacuti()
 	{
 		$id = $this->input->post('id');
-		if($this->cuti_model->get_by_total_cuti(date('Y'),1,$value->id)->num_rows()>=1){
+		if($this->cuti_model->get_by_total_cuti(date('Y'),1,$id)->num_rows()>=1){
     		$ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$id)->row()->total); 
 	}else{
 		$ambil=0;

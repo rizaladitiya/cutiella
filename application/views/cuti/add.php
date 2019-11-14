@@ -180,6 +180,7 @@ $nama = $sess->nama;
                 </div>
                 <div class="box-footer clearfix">
                     <button class="pull-right btn btn-default" id="sendEmail">Simpan <i class="fa fa-save"></i></button>
+                    <button class="pull-right btn btn-default" id="cancel">Batal <i class="fa fa-close"></i></button>
                     <input name="id" type="hidden" id="id" value="<?=(isset($cuti->id))?$cuti->id:0;?>" />
                 </div>
             </div>
@@ -239,8 +240,11 @@ $this->load->view('template/js');
 
 <script type="text/javascript">
 $(function () {
-	var sisa=0;
-	
+	var sisa;
+		$( "#cancel" ).click(function() {
+		  window.location.href = '<?=$this->agent->referrer();?>'; 
+		  return false;
+		});
 		$('.select2').select2();
 		$('#dari,#hingga,#tglkeluar').datepicker({
       		autoclose: true,
@@ -251,7 +255,6 @@ $(function () {
 		$('.select2').on('select2:select', function (e) {
 			var data = e.params.data;
 			id = data.id;
-			sisa = data.id;
 		// Do something here.
 		        $.ajax({
 				url: '<?=base_url('cuti/sisacuti');?>',
@@ -260,6 +263,7 @@ $(function () {
 				dataType: 'text',
 				success: function( data, textStatus, jQxhr ){
 					$("#lama").attr("placeholder", "Sisa " + data + " hari");
+					sisa = data;
 				},
 				error: function( jqXhr, textStatus, errorThrown ){
 					console.log( errorThrown );
@@ -284,7 +288,8 @@ $(function () {
 	});	
 	// Bind to the submit event of our form
 	$("#formcuti").submit(function(event){
-		if($('#lama').val()>sisa){
+		if(parseInt($('#lama').val())>parseInt(sisa)){
+			
 			alert('jatah cuti habis');
 			return false;
 		}
