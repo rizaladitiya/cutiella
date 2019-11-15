@@ -15,7 +15,7 @@ class Setting extends CI_Controller {
 		
 		$this->data['id'] = $sess->id;
 		$this->data['user'] = $sess->user;
-		$this->data['email'] = $sess->nama;
+		$this->data['nama'] = $sess->nama;
 		$this->data['akses'] = $sess->akses;
 		if(!$this->session->userdata('logged_in'))
    			
