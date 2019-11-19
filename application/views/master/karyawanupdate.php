@@ -112,6 +112,12 @@ $this->load->view('template/sidebar');
                       		    <input name="pangkat" type="text" class="form-control pull-right" id="pangkat" value="<?=(isset($karyawan->pangkat))?$karyawan->pangkat:'';?>"/>
                       		  </div>
                		  </div>
+                      <div class="col-xs-4" <?=(date('Y')=="2019")?'':'style="display:none"';?>>
+                      <label>Sisa Cuti 2019</label>
+                      		  <div class="input-group">
+                      		    <input name="sisacuti" type="text" class="form-control pull-right" id="sisacuti" value="<?=(isset($karyawan->sisacuti))?$karyawan->sisacuti:'';?>"/>
+                      		  </div>
+               		  </div>
                          </div>
                     <div class="row">
                     	<div class="col-xs-6">

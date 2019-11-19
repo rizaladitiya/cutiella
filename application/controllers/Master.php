@@ -44,13 +44,15 @@ class Master extends CI_Controller {
 		$data=array(
 					'nama'=>$this->input->post('nama'),
 					'user'=>$this->input->post('user'),
-					'email'=>$this->input->post('email')
+					'email'=>$this->input->post('email'),
+					'sisacuti'=>$this->input->post('sisacuti')
 					);
 		}else{
 			$data=array(
 					'nama'=>$this->input->post('nama'),
 					'user'=>$this->input->post('user'),
 					'email'=>$this->input->post('email'),
+					'sisacuti'=>$this->input->post('sisacuti'),
 					'password'=>md5($this->input->post('password'))
 					);
 		}
@@ -82,6 +84,7 @@ class Master extends CI_Controller {
 										'unitkerja'=>$value->unitkerja,
 										'gelar'=>$value->gelar,
 										'email'=>$value->email,
+										'sisacuti'=>$value->sisacuti,
 										'pangkat'=>$value->pangkat
 									);
 			}
@@ -112,6 +115,7 @@ class Master extends CI_Controller {
 						'unitkerja'=>$this->input->post('unitkerja'),
 						'gelar'=>$this->input->post('gelar'),
 						'email'=>$this->input->post('email'),
+						'sisacuti'=>$this->input->post('sisacuti'),
 						'pangkat'=>$this->input->post('pangkat')
 						);
 		}else{
@@ -123,6 +127,7 @@ class Master extends CI_Controller {
 						'unitkerja'=>$this->input->post('unitkerja'),
 						'gelar'=>$this->input->post('gelar'),
 						'email'=>$this->input->post('email'),
+						'sisacuti'=>$this->input->post('sisacuti'),
 						'password'=>md5($password),
 						'pangkat'=>$this->input->post('pangkat')
 						);

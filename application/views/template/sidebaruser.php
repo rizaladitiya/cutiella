@@ -24,6 +24,11 @@ $email = $sess->email;
         <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
             <li class="header">Navigasi</li>
+            <li>
+                <a href="<?php echo site_url('admin') ?>">
+                    <i class="fa fa-circle-o"></i> <span>Dashboard</span>
+                </a>
+            </li>
             <li class="treeview <?=$this->uri->segment('1')=="izin"?'active':'';?>">
                 <a href="#">
                     <i class="fa fa-calendar" ></i> <span>Surat Izin</span> <i class="fa fa-angle-left pull-right"></i>

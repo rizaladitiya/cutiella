@@ -44,9 +44,7 @@ if(!empty($tidakmasuk)){
     <td align="center">
     	<p>
         	Kepada<br />
-            Yth. <?=$this->karyawan_model->get_by_id($pejabatcuti)->row()->jabatan; ?>
-			<br /><?=$this->karyawan_model->get_by_id($pejabatcuti)->row()->nama.", ".$this->karyawan_model->get_by_id($pejabatcuti)->row()->gelar; ?><br />
-            NIP. <?=$this->karyawan_model->get_by_id($pejabatcuti)->row()->nip;?><br />
+          Yth. <?=$this->karyawan_model->get_by_id($pejabatcuti)->row()->jabatan; ?><br />
             di tempat<br />
         </p>
     </td>

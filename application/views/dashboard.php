@@ -78,118 +78,40 @@ input:checked + .slider:before {
 </style>
 <?php
 $this->load->view('template/topbar');
-$this->load->view('template/sidebar');
+if($akses=='admin'){
+	$this->load->view('template/sidebar');
+	}else{
+	$this->load->view('template/sidebaruser');		
+}
 ?>
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h1><?=$this->about_model->get_by_nama('program')->row()->value;?><small></small>
+    <h1>Dashboard<small></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li>Laporan</li>
-        <li class="active">Harian</li>
+        <li>Dashboard</li>
     </ol>
 </section>
 
 <!-- Main content -->
 <section class="content">
   <div class="row">
-  <form action="<?=base_url('admin');?>" method="post">
-  	<div class="nav-tabs-custom">
-                  <div class="box box-primary">
-                <div class="box-header">
-                    <i class="fa fa-pencil-square-o"></i>
-                    <h3 class="box-title">Laporan Surat Tugas</h3>
-                </div>
-                <div class="box-body">
-                        <div class="form-group">
-                        <div class="row">
-                       	  <div class="col-xs-3">
-                        <label>Dari</label>
-                    			<div class="input-group">
-                     				<div class="input-group-addon">
-                        				<i class="fa fa-calendar"></i>
-                      				</div>
-                      			<input name="datetime" type="text" class="form-control pull-right" id="datetime" value="<?=(isset($datetime))?$datetime:'';?>"/>
-                    			</div>
-                          </div>
-    <div class="col-xs-3">
-   	    <label>Hingga</label>
-                           	<div class="input-group">
-                            	<div class="input-group-addon">
-                        				<i class="fa fa-calendar"></i>
-               				  </div>
-                         	    <input name="datetime2" type="text" class="form-control pull-right" id="datetime2" value="<?=(isset($datetime2))?$datetime2:'';?>"/>
-           	      </div></div>
-</div>
-                        </div>
-                </div>
-                <div class="box-footer clearfix">
-                  <button class="pull-left btn btn-default" id="sendEmail">Tampilkan                <i class="fa fa-search"></i></button>
-                </div>
-            </div>
-                
-          </form> 
-       <?php if(!empty($survey)){
-	  ?>
-	  <div class="box box-primary">
-	  <div class="box-header">
-                    <i class="fa fa-pencil-square-o"></i>
-                    <h3 class="box-title">Laporan Harian</h3>
-                </div>
-	  <div class="box-body table-responsive">
-	  <button type="button" class="pull-left btn btn-default" onclick="selectElementContents(document.getElementById('laporan'));">Copy <i class="fa fa-copy"></i></button>
-	  <a href="<?=base_url('export/harian/xlsx/'.$datetime."/".$datetime2);?>" class="pull-left btn btn-default">Excel <i class="fa fa-file-excel-o"></i></a>
-            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-bordered table-hover text-center" id="laporan">
-  <tr>
-    <th>Tanggal</th>
-    <th>Kel</th>
-    <th>1</th>
-    <th>2</th>
-    <th>3</th>
-    <th>4</th>
-    <th>5</th>
-    <th>6</th>
-    <th>7</th>
-    <th>8</th>
-    <th>9</th>
-    <th>Rata</th>
-    <th>%</th>
-    <th>P/TP</th>
-  </tr>
-  <?php
-		foreach($survey as $value){
-			$persen=$this->data_model->get_by_average($value->id)->row()->avg/$this->jawaban_model->get_by_max()->row()->max*100;
-			$kesimpulan=$this->data_model->get_kesimpulan($persen)->row()->value;
-			
-			?>
-  <tr>
-    <td><?=$value->datetime;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,1)->row()->jawaban;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,2)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,3)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,4)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,5)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,6)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,7)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,8)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,9)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_detail_id($value->id,10)->row()->bobot;?></td>
-    <td><?=$this->data_model->get_by_average($value->id)->row()->avg;?></td>
-    <td><?=$persen;?></td>
-    <td><?=$kesimpulan;?></td>
-  </tr>
-  <?php 
-  	}
-	?>
- 
-	</table>
-  </div>
-  </div>
-  <?php } ?>
+  
+	<div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+			<span class="info-box-icon bg-green"><i class="fa fa-sign-out"></i></span>
+            
+			<div class="info-box-content">
+            <span class="info-box-text">Sisa Cuti</span>
+             <h3><?=$totalsisa;?></h3>
+			</div>
+			<!-- /.info-box-content -->
+	  </div>
 	</div>
-  </div> 
+	
+	</div> 
   
   
 </section><!-- /.content -->

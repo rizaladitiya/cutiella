@@ -62,13 +62,40 @@ function get_by_macamcuti(){
 }
 
 function get_macamcuti_by_id($id){
+	
 	$select=array(
-				$this->primary_key,
-				'nama',
-				'lama'
-			);
+			$this->primary_key,
+			'nama',
+			'lama');
 	$this->db->select($select);    
 	$this->db->from($this->table_macamcuti);
+	$this->db->where($this->primary_key,$id);
+	$this->db->order_by('nama asc');
+	return $this->db->get();
+}
+
+function get_sisacuti_by_id($id,$year){
+	$tahunberlaku = 2019;
+	
+	if($year==$tahunberlaku){
+		$select=array(
+				'sisacuti as lama'
+			);
+		$where=array(
+				'id'=>$id
+			);
+		$from = "karyawan";
+	} else {
+		$select=array(
+			'lama'
+		);
+		$where=array(
+				'id'=>1
+			);
+		$from = $this->table_macamcuti;
+	}
+	$this->db->select($select);    
+	$this->db->from($from);
 	$this->db->where($this->primary_key,$id);
 	$this->db->order_by('nama asc');
 	return $this->db->get();
@@ -370,6 +397,7 @@ function get_by_total_cuti($year,$idcuti,$id){
 	$where=array(
 				'suratcuti.karyawan'=>$id,
 				'suratcuti.macamcuti'=>$idcuti,
+				'suratcuti.approve'=>1,
 				'year(suratcuti.dari)'=>$year
 		);
 	$this->db->select($select);    
