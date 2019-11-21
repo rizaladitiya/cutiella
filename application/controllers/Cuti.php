@@ -81,6 +81,7 @@ class Cuti extends CI_Controller {
 		$new_order=($order_type=='asc'?'desc':'asc');
 		$this->table->set_heading(
 		'Print',
+		'Upload',
 		'Approve',
 		anchor('cuti/index/'.$offset.'/nomor/'.$new_order."/".$where,'Nomor'),
 		anchor('cuti/index/'.$offset.'/nama/'.$new_order."/".$where,'Nama'),
@@ -101,6 +102,7 @@ class Cuti extends CI_Controller {
 		$daftartembusan = $this->cuti_model->get_by_tembusan($all->id);
 		$this->table->add_row(
 			anchor('cetak/cetak/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
+			'<a href="'.site_url("cuti/upload/".$all->id).'" class="fa fa-upload" target="_blank">&nbsp;</a>',
 			'<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />',
 			$all->nomor,
 			$all->nama,
@@ -232,15 +234,55 @@ class Cuti extends CI_Controller {
 		$this->load->view('cuti/add.php',$data);
 	}
 	
+	function upload(){
+		
+		$data=$this->data;
+		$data['akses']=$this->akses;
+		$data['karyawans'] = $this->karyawan_model->get_by_all()->result();
+		$data['macamcutis'] = $this->cuti_model->get_by_macamcuti()->result();
+		$data['tembusans'] = $this->tembusan_model->get_by_all()->result();
+		$alls=$this->cuti_model->get_by_id($this->uri->segment(3))->result();
+		$tembusan = $this->cuti_model->get_tembusan_by_cuti($this->uri->segment(3))->result();
+		foreach ($alls as $value) {
+			$hasil=(object)array(
+							'id'=>$value->id,
+							'karyawan'=>$value->karyawan,
+							'nomor'=>$value->nomor,
+							'macamcuti'=>$value->macamcuti,
+							'dari'=>$value->dari,
+							'hingga'=>$value->hingga,
+							'alamatcuti'=>$value->alamatcuti,
+							'tglkeluar'=>$value->tglkeluar,
+							'atasan'=>$value->atasan,
+							'nomerhp'=>$value->nomerhp,
+							'lama'=>$value->lama,
+							'alasancuti'=>$value->alasancuti,
+							'tembusan'=>$tembusan
+						);
+		}
+		
+		$data['cuti']=$hasil;
+		$this->load->view('cuti/upload.php',$data);
+	}
+	
 	public function sisacuti()
 	{
 		$id = $this->input->post('id');
-		if($this->cuti_model->get_by_total_cuti(date('Y'),1,$id)->num_rows()>=1){
-    		$ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$id)->row()->total); 
+		$macamcuti = $this->input->post('macamcuti');
+		if($this->cuti_model->get_by_total_cuti(date('Y'),$macamcuti,$id)->num_rows()>=1){
+    		$ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),$macamcuti,$id)->row()->total); 
 	}else{
 		$ambil=0;
-		}
+	}
+	if($macamcuti==1){
+		$jatah = round($this->cuti_model->get_cuti_n_id($id)->row()->sisacuti);
+	}else if($macamcuti==7){
+		$jatah = round($this->cuti_model->get_cuti_n1_id($id)->row()->sisacuti1);
+	}else if($macamcuti==8){
+		$jatah = round($this->cuti_model->get_cuti_n2_id($id)->row()->sisacuti2);
+	}else{
 	$jatah = round($this->cuti_model->get_macamcuti_by_id(1)->row()->lama);
+	}
 		echo $jatah-$ambil;
 	}
 	
@@ -374,6 +416,29 @@ class Cuti extends CI_Controller {
 		$params['data'] = $url;
 		$this->ciqrcode->generate($params);
 	}
+	
+	public function uploadsave(){
+    
+      // lakukan upload file dengan memanggil function upload yang ada di GambarModel.php
+	  
+		$id = $this->input->post("id");
+      $upload = $this->cuti_model->upload();
+      if($upload['result'] == "success"){ // Jika proses upload sukses
+         // Panggil function save yang ada di GambarModel.php untuk menyimpan data ke database
+        $this->cuti_model->gambarsave($upload,$id);
+		//echo "success";
+		
+		redirect($this->agent->referrer(), 'refresh');
+        
+        //redirect('gambar'); // Redirect kembali ke halaman awal / halaman view data
+      }else{ // Jika proses upload gagal
+        $data['message'] = $upload['error']; // Ambil pesan error uploadnya untuk dikirim ke file form dan ditampilkan
+		echo $data['message'];
+      }
+    
+    
+    //$this->load->view('gambar/form', $data);
+  }
 	
 	
 }

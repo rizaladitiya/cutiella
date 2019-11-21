@@ -112,12 +112,7 @@ $this->load->view('template/sidebar');
                       		    <input name="pangkat" type="text" class="form-control pull-right" id="pangkat" value="<?=(isset($karyawan->pangkat))?$karyawan->pangkat:'';?>"/>
                       		  </div>
                		  </div>
-                      <div class="col-xs-4" <?=(date('Y')=="2019")?'':'style="display:none"';?>>
-                      <label>Sisa Cuti 2019</label>
-                      		  <div class="input-group">
-                      		    <input name="sisacuti" type="text" class="form-control pull-right" id="sisacuti" value="<?=(isset($karyawan->sisacuti))?$karyawan->sisacuti:'';?>"/>
-                      		  </div>
-               		  </div>
+                      
                          </div>
                     <div class="row">
                     	<div class="col-xs-6">
@@ -127,6 +122,26 @@ $this->load->view('template/sidebar');
                       <div class="col-xs-4">
                     <label>Email</label>
                       		    <input name="email" type="text" class="form-control pull-right" id="email" value="<?=(isset($karyawan->email))?$karyawan->email:'';?>"/>
+               		  </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-4">
+                      <label>Sisa Cuti</label>
+                      		  <div class="input-group">
+                      		    <input name="sisacuti" type="text" class="form-control pull-right" id="sisacuti" value="<?=(isset($karyawan->sisacuti))?$karyawan->sisacuti:'';?>"/>
+                      		  </div>
+               		  </div>
+                    <div class="col-xs-4">
+                      <label>Sisa Cuti N-1</label>
+                      		  <div class="input-group">
+                      		    <input name="sisacuti1" type="text" class="form-control pull-right" id="sisacuti1" value="<?=(isset($karyawan->sisacuti1))?$karyawan->sisacuti1:'';?>"/>
+                      		  </div>
+               		  </div>
+                    <div class="col-xs-4">
+                      <label>Sisa Cuti N-2</label>
+                      		  <div class="input-group">
+                      		    <input name="sisacuti2" type="text" class="form-control pull-right" id="sisacuti2" value="<?=(isset($karyawan->sisacuti2))?$karyawan->sisacuti2:'';?>"/>
+                      		  </div>
                		  </div>
                     </div>
                     <div class="row">

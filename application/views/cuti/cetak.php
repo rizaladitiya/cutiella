@@ -206,16 +206,14 @@ if(!empty($cuti)){
   <tr>
     <td>N-2</td>
     <td align="center"><?php
-	if($value->macamcuti==1){
-    if($this->cuti_model->get_by_total_cuti(date('Y', strtotime('-2 year')),1,$value->id)->num_rows()>=1){
-    $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$value->id)->row()->total); }else{
+	if($value->macamcuti==1 or $value->macamcuti==7 or $value->macamcuti==8){
+    if($this->cuti_model->get_by_total_cuti(date('Y'),8,$value->id)->num_rows()>=1){
+    $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),8,$value->id)->row()->total); 
+		}else{
 		$ambil=0;
 		}
-		if(idate('Y')<=2021){
-			$jatah=0;
-		}else{
-		$jatah = round($this->cuti_model->get_sisacuti_by_id($value->karyawan,date('Y', strtotime('-2 year')))->row()->lama);
-		}
+			$jatah = round($this->cuti_model->get_cuti_n2_id($value->karyawan)->row()->sisacuti2);
+		
 		$totalsisa = $jatah-$ambil;
 		echo ($totalsisa==0)?'':$totalsisa;
 		//echo $jatah-$ambil;
@@ -241,17 +239,15 @@ if(!empty($cuti)){
   <tr>
     <td>N-1</td>
     <td align="center"><?php
-	if($value->macamcuti==1){
-	if($this->cuti_model->get_by_total_cuti(date('Y', strtotime('-1 year')),1,$value->id)->num_rows()>=1){
-    $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$value->id)->row()->total); 
+	if($value->macamcuti==1 or $value->macamcuti==7 or $value->macamcuti==8){
+	if($this->cuti_model->get_by_total_cuti(date('Y'),7,$value->id)->num_rows()>=1){
+    $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),7,$value->id)->row()->total); 
 	}else{
 		$ambil=0;
 		}
-		if(idate('Y')==2019){
-			$jatah=0;
-		}else{
-		$jatah = round($this->cuti_model->get_sisacuti_by_id($value->karyawan,date('Y', strtotime('-1 year')))->row()->lama);
-		}
+		
+		$jatah = round($this->cuti_model->get_cuti_n1_id($value->karyawan)->row()->sisacuti1);
+		
 		$totalsisa = $jatah-$ambil;
 		echo ($totalsisa==0)?'':$totalsisa;
 		
@@ -284,7 +280,7 @@ if(!empty($cuti)){
 	}else{
 		$ambil=0;
 		}
-	$jatah = round($this->cuti_model->get_sisacuti_by_id($value->karyawan,date('Y'))->row()->lama);
+	$jatah = round($this->cuti_model->get_cuti_n_id($value->karyawan)->row()->sisacuti);
 		$totalsisa = $jatah-$ambil;
 		echo ($totalsisa==0)?'':$totalsisa;
 	}
@@ -354,8 +350,8 @@ if(!empty($cuti)){
     <td width="25%">
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
         	<tr>
-            	<td align="center"><?=$this->karyawan_model->get_by_id($value->atasan)->row()->nama.", ".$this->karyawan_model->get_by_id($value->atasan)->row()->gelar; ?>
-                <br /><br />
+            	<td align="center">
+                <br /><br /><?=$this->karyawan_model->get_by_id($value->atasan)->row()->nama.", ".$this->karyawan_model->get_by_id($value->atasan)->row()->gelar; ?>
                 <br />NIP. <?=$this->karyawan_model->get_by_id($value->atasan)->row()->nip;?>
                 </td>
             </tr>
@@ -391,8 +387,9 @@ if(!empty($cuti)){
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
         	<tr>
             	<td align="center">
+                <br /><br />
 				<?=$this->karyawan_model->get_by_id($pejabatcuti)->row()->nama.", ".$this->karyawan_model->get_by_id($pejabatcuti)->row()->gelar; ?>
-                <br /><br /><br />NIP. <?=$this->karyawan_model->get_by_id($pejabatcuti)->row()->nip;?>
+                <br />NIP. <?=$this->karyawan_model->get_by_id($pejabatcuti)->row()->nip;?>
                 
                 </td>
             </tr>

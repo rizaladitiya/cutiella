@@ -259,7 +259,7 @@ $(function () {
 		        $.ajax({
 				url: '<?=base_url('cuti/sisacuti');?>',
 				type: 'post',
-				data: {"id": id},
+				data: {"id": id,"macamcuti":$("#macamcuti").val()},
 				dataType: 'text',
 				success: function( data, textStatus, jQxhr ){
 					$("#lama").attr("placeholder", "Sisa " + data + " hari");
@@ -271,11 +271,28 @@ $(function () {
 				}
 			});
 		});
-		
-	$.ajax({
+		$('#macamcuti').on('change', function() {
+		// Do something here.
+				id = $('#karyawan').select2().val();
+		        $.ajax({
 				url: '<?=base_url('cuti/sisacuti');?>',
 				type: 'post',
-				data: {"id": $('#karyawan').val()},
+				data: {"id": id,"macamcuti":$("#macamcuti").val()},
+				dataType: 'text',
+				success: function( data, textStatus, jQxhr ){
+					$("#lama").attr("placeholder", "Sisa " + data + " hari");
+					sisa = data;
+				},
+				error: function( jqXhr, textStatus, errorThrown ){
+					console.log( errorThrown );
+					alert(errorThrown);
+				}
+			});
+		});
+			$.ajax({
+				url: '<?=base_url('cuti/sisacuti');?>',
+				type: 'post',
+				data: {"id": $('#karyawan').val(),"macamcuti":$("#macamcuti").val()},
 				dataType: 'text',
 				success: function( data, textStatus, jQxhr ){
 					$("#lama").attr("placeholder", "Sisa " + data + " hari");

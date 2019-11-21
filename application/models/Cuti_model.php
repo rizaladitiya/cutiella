@@ -101,6 +101,55 @@ function get_sisacuti_by_id($id,$year){
 	return $this->db->get();
 }
 
+function get_cuti_n_id($id){
+	
+		$select=array(
+				'sisacuti'
+			);
+		$where=array(
+				'id'=>$id
+			);
+		$from = "karyawan";
+	
+	$this->db->select($select);    
+	$this->db->from($from);
+	$this->db->where($this->primary_key,$id);
+	$this->db->order_by('nama asc');
+	return $this->db->get();
+}
+function get_cuti_n1_id($id){
+	
+		$select=array(
+				'sisacuti1'
+			);
+		$where=array(
+				'id'=>$id
+			);
+		$from = "karyawan";
+	
+	$this->db->select($select);    
+	$this->db->from($from);
+	$this->db->where($this->primary_key,$id);
+	$this->db->order_by('nama asc');
+	return $this->db->get();
+}
+function get_cuti_n2_id($id){
+	
+		$select=array(
+				'sisacuti2'
+			);
+		$where=array(
+				'id'=>$id
+			);
+		$from = "karyawan";
+	
+	$this->db->select($select);    
+	$this->db->from($from);
+	$this->db->where($this->primary_key,$id);
+	$this->db->order_by('nama asc');
+	return $this->db->get();
+}
+
 function get_macamcuti_by_name($name){
 	$select=array(
 				$this->primary_key,
@@ -409,6 +458,38 @@ function get_by_total_cuti($year,$idcuti,$id){
 	$this->db->order_by('dari asc');
 	return $this->db->get();
 }
+
+// Fungsi untuk melakukan proses upload file
+  public function upload(){
+    $config['upload_path'] = './assets/images/';
+    $config['allowed_types'] = 'jpg|png|jpeg';
+    $config['max_size']	= '2048';
+    $config['remove_space'] = TRUE;
+  
+    $this->load->library('upload', $config); // Load konfigurasi uploadnya
+	$this->upload->initialize($config);
+    if($this->upload->do_upload("input_gambar")){ // Lakukan upload dan Cek jika proses upload berhasil
+      // Jika berhasil :
+      $return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
+      return $return;
+    }else{
+      // Jika gagal :
+      $return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
+      return $return;
+    }
+  }
+  
+  // Fungsi untuk menyimpan data ke database
+  public function gambarsave($upload,$id){
+	  rename("./assets/images/".$upload['file']['file_name'],"./assets/images/".$id.".".strtolower(end(explode('.',$upload['file']['file_name']))));
+    $data = array(
+      'filename'=>$id.".".strtolower(end(explode('.',$upload['file']['file_name']))),
+	  'upload'=>date('Y-m-d H:i:s')
+    );
+	
+	$this->db->where($this->primary_key,$id);
+    $this->db->update('suratcuti', $data);
+  }
 function add_tembusan($datas,$id) {
 	$data = array();
 	foreach($datas as $data2){

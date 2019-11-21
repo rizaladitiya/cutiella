@@ -24,6 +24,8 @@ function get_by_all(){
 				'pangkat',
 				'email',
 				'sisacuti',
+				'sisacuti1',
+				'sisacuti2',
 				'awalkerja'
 			);
 	$this->db->select($select);    
@@ -44,6 +46,8 @@ function get_by_last(){
 				'pangkat',
 				'email',
 				'sisacuti',
+				'sisacuti1',
+				'sisacuti2',
 				'awalkerja'
 			);
 	$this->db->select($select);    
@@ -64,6 +68,8 @@ function get_by_id($id){
 				'pangkat',
 				'email',
 				'sisacuti',
+				'sisacuti1',
+				'sisacuti2',
 				'awalkerja'
 			);
 	$this->db->select($select);    
