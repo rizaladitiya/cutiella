@@ -32,9 +32,45 @@ class Admin extends CI_Controller {
 	public function index()
 	{
 		$data=$this->data;
-		$ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$this->id)->row()->total); 
-		$jatah = round($this->cuti_model->get_sisacuti_by_id($this->id,date('Y'))->row()->lama);
-		$data['totalsisa'] = $jatah-$ambil;
+		if($this->cuti_model->get_by_total_cuti(date('Y'),1,$this->id)->num_rows()>=1){
+			$ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),1,$this->id)->row()->total); 
+		}else{
+			$ambil=0;
+		}
+		$jatah = round($this->cuti_model->get_cuti_n_id($this->id)->row()->sisacuti);
+		$totalsisa = $jatah-$ambil;
+		$data['totalsisa'] = $totalsisa;
+		
+		
+		
+		
+		
+		if($this->cuti_model->get_by_total_cuti(date('Y'),7,$this->id)->num_rows()>=1){
+    $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),7,$this->id)->row()->total); 
+	}else{
+		$ambil=0;
+		}
+		
+		$jatah = round($this->cuti_model->get_cuti_n1_id($this->id)->row()->sisacuti1);
+		
+		$totalsisa = $jatah-$ambil;
+		
+		$data['totalsisa1'] = $totalsisa;
+		
+		
+		
+		if($this->cuti_model->get_by_total_cuti(date('Y'),8,$this->id)->num_rows()>=1){
+    $ambil=round($this->cuti_model->get_by_total_cuti(date('Y'),8,$this->id)->row()->total); 
+		}else{
+		$ambil=0;
+		}
+			$jatah = round($this->cuti_model->get_cuti_n2_id($this->id)->row()->sisacuti2);
+		
+		$totalsisa = $jatah-$ambil;
+		
+		$data['totalsisa2'] = $totalsisa;
+		
+		
 		$this->load->view('dashboard',$data);
 	}
 }

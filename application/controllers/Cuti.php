@@ -102,7 +102,7 @@ class Cuti extends CI_Controller {
 		$daftartembusan = $this->cuti_model->get_by_tembusan($all->id);
 		$this->table->add_row(
 			anchor('cetak/cetak/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
-			'<a href="'.site_url("cuti/upload/".$all->id).'" class="fa fa-upload" target="_blank">&nbsp;</a>',
+			'<a href="'.site_url("cuti/upload/".$all->id).'" class="fa fa-upload">&nbsp;</a>',
 			'<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />',
 			$all->nomor,
 			$all->nama,

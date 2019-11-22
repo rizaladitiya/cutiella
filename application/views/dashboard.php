@@ -104,8 +104,30 @@ if($akses=='admin'){
 			<span class="info-box-icon bg-green"><i class="fa fa-sign-out"></i></span>
             
 			<div class="info-box-content">
-            <span class="info-box-text">Sisa Cuti</span>
+            <span class="info-box-text">Sisa Cuti N</span>
              <h3><?=$totalsisa;?></h3>
+			</div>
+			<!-- /.info-box-content -->
+	  </div>
+	</div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+			<span class="info-box-icon bg-orange"><i class="fa fa-sign-out"></i></span>
+            
+			<div class="info-box-content">
+            <span class="info-box-text">Sisa Cuti N-1</span>
+             <h3><?=$totalsisa1;?></h3>
+			</div>
+			<!-- /.info-box-content -->
+	  </div>
+	</div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+			<span class="info-box-icon bg-blue"><i class="fa fa-sign-out"></i></span>
+            
+			<div class="info-box-content">
+            <span class="info-box-text">Sisa Cuti N-2</span>
+             <h3><?=$totalsisa2;?></h3>
 			</div>
 			<!-- /.info-box-content -->
 	  </div>
