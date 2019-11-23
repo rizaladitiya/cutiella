@@ -15,6 +15,7 @@ $this->load->view('template/head');
 <link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/daterangepicker/daterangepicker-bs3.css') ?>" rel="stylesheet" type="text/css" />
 <!-- bootstrap wysihtml5 - text editor -->
 <link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/select2/select2.min.css') ?>" rel="stylesheet" type="text/css" />
 
 <?php
 $this->load->view('template/topbar');
@@ -23,57 +24,95 @@ if($akses=='admin'){
 	}else{
 	$this->load->view('template/sidebaruser');		
 }
-$where = $this->uri->segment(6);
+
+$sess = getsession();
+$id = $sess->id;
+$nama = $sess->nama;
 ?>
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Tidak Masuk
-    <small>(View)</small></h1>
+        Izin
+    <small>(Upload)</small></h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Tidak Masuk</li>
-        <li class="active">View</li>
+        <li class="active">Izin</li>
+        <li class="active">Upload</li>
     </ol>
 </section>
 
 <!-- Main content -->
 <section class="content">
- 
+ <form action="<?=base_url('izin/uploadsave');?>" method="post" id="formizin" enctype="multipart/form-data">
     <!-- Small boxes (Stat box) -->
     <!-- /.row -->
     <!-- Main row -->
     <div class="row">
-    	<div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Data Tidak Masuk</h3>
-			
-              <div class="box-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                  <input name="table_search" type="text" class="form-control pull-right" id="katakunci" value="<?=(!empty($where))?$where:'';?>" placeholder="Search">
-
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default" id="cari"><i class="fa fa-search"></i></button>
-                  </div>
+        <!-- Left col -->
+        <section class="col-lg-10 connectedSortable">
+        <div class="alert alert-success" id="success-alert" style="display:none">
+    		<button type="button" class="close" data-dismiss="alert">x</button>
+    		Data Berhasil Disimpan.
+		</div>
+        <div class="alert alert-danger" id="alert-danger" style="display:none">
+    		<button type="button" class="close" data-dismiss="alert">x</button>
+    		Data Gagal Disimpan, hubungi Administrator.
+		</div>
+        
+        <!-- Custom tabs (Charts with tabs)-->
+            <div class="nav-tabs-custom">
+                <!-- Tabs within a box -->
+                <div class="tab-content no-padding">
+                    <!-- Morris chart - Sales -->
+                  <div class="box box-primary">
+                <div class="box-header">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <h3 class="box-title">Upload Izin</h3>
                 </div>
-              </div>
+                
+                <div class="box-body">
+                  <div class="form-group">
+                    <div class="row"><div class="col-xs-4">
+                      <label>Upload</label>
+                      		  <div class="input-group">
+                      		    <input type="file" name="input_gambar">
+               		    </div>
+                       		</div>
+                      
+                    </div>
+                    
+                     </div>
+                       <!-- Loading (remove the following to stop the loading)-->
+            <div class="overlay" style="display:none">
+              <i class="fa fa-refresh fa-spin"></i>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <?=$table;?>
+            <!-- end loading -->
+                </div>
+                <div class="box-footer clearfix">
+                    <button type="submit" class="pull-right btn btn-default" ><i class="fa fa-save">Upload</i></input>
+                    <button class="pull-right btn btn-default" id="cancel">Batal <i class="fa fa-close"></i></button>
+                    <input name="id" type="hidden" id="id" value="<?=(isset($izin->id))?$izin->id:0;?>" />
+                </div>
             </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              
-              <?=$pagination;?>
-            </div>
-          </div>
-          <!-- /.box -->
-        </div>
+                </div>
+                
+       
+            </div><!-- /.nav-tabs-custom -->
+
+
+			<!-- /.box -->
+            <!-- TO DO List --><!-- /.box -->
+
+            <!-- quick email widget -->
+          
+
+        </section><!-- /.Left col -->
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        <!-- right col -->
     </div><!-- /.row (main row) -->
 
+                    </form>
 </section><!-- /.content -->
 
 
@@ -106,45 +145,20 @@ $this->load->view('template/js');
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') ?>" type="text/javascript"></script>
 <!-- iCheck -->
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/iCheck/icheck.min.js') ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/select2/select2.full.min.js') ?>" type="text/javascript"></script>
 
 
 
 <script type="text/javascript">
-$(function () {		
-		var akses;
-		akses = '<?=$akses;?>';
+$(function () {
+	var sisa;
+		$( "#cancel" ).click(function() {
+		  window.location.href = '<?=$this->agent->referrer();?>'; 
+		  return false;
+		});
 		
 
-		
-		$("#cari").click(function(){
-			window.location.href = '<?=base_url('tidakmasuk')."/index/0/nomor/asc/";?>'+$("#katakunci").val();  
-		});
-		$(".minimal").change(function() {
-			var id = $(this).attr('value');
-			var konfirm;
-			
-    		if(this.checked) {
-        		//Do stuff
-				//alert(id);
-				konfirm = confirm("Apa anda ingin menyetujui?");
-				if(konfirm){
-				$.get( "<?=base_url('tidakmasuk')?>/approve/"+id+"/1", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});
-				} else {
-					$(this).prop('checked', false);
-				}
-    		} else {
-				konfirm = confirm("Apa anda ingin membatalkan persetujuan?");
-				if(konfirm){
-				$.get( "<?=base_url('tidakmasuk')?>/approve/"+id+"/0", function( data ) {
-				  //alert( "Data Loaded: " + data );
-				});	
-				}else{
-					$(this).prop('checked', true);
-				}
-			}
-		});
+	
 });
 </script>
 <?php

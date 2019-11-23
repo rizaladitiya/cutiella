@@ -115,32 +115,35 @@ $(function () {
 		akses = '<?=$akses;?>';
 		
 
-		$('.minimal').each(function() {
-			// Do something interesting
-			if((akses=='admin')){
-				$(this).prop("hidden", false);
-				}else{
-				$(this).prop("hidden", true);
-				}
-		});
+		
 		$("#cari").click(function(){
 			window.location.href = '<?=base_url('cuti')."/index/0/nomor/asc/";?>'+$("#katakunci").val();  
 		});
 		$(".minimal").change(function() {
 			
 			var id = $(this).attr('value');
-			
+			var konfirm;
 			
     		if(this.checked) {
         		//Do stuff
 				//alert(id);
+				konfirm = confirm("Apa anda ingin menyetujui?");
+				if(konfirm){
 				$.get( "<?=base_url('cuti')?>/approve/"+id+"/1", function( data ) {
 				  //alert( "Data Loaded: " + data );
 				});
+				} else {
+					$(this).prop('checked', false);
+				}
     		} else {
+				konfirm = confirm("Apa anda ingin membatalkan persetujuan?");
+				if(konfirm){
 				$.get( "<?=base_url('cuti')?>/approve/"+id+"/0", function( data ) {
 				  //alert( "Data Loaded: " + data );
 				});	
+				}else{
+					$(this).prop('checked', true);
+				}
 			}
 		});
 });

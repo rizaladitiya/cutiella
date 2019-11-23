@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Cuti extends CI_Controller {
 	
 	private $limit=30;
-	private $id,$nama,$akses;
+	private $id,$nama,$akses,$user;
 	private $data=array();
 	function __construct(){
 		parent::__construct();		
@@ -17,6 +17,7 @@ class Cuti extends CI_Controller {
 		$this->id = $sess->id;
 		$this->nama = $sess->nama;
 		$this->akses = $sess->akses;
+		$this->user = $sess->user;
 		
 		$this->data['id'] = $sess->id;
 		$this->data['user'] = $sess->user;
@@ -99,11 +100,28 @@ class Cuti extends CI_Controller {
 	$i=0+$offset;
 	$max_char=45;
 	foreach ($alls as $all){
+		$upload="";
+		$approve="";
+		
+		if($this->user=="admin"){
+			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
+			$delete=anchor('cuti/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+		}else{
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$delete="&nbsp;";
+		}
+		
+		if($all->upload==""){
+			$upload='<a href="'.site_url("cuti/upload/".$all->id).'" class="fa fa-upload">&nbsp;</a>';
+		}else{
+			$upload='<a href="'.site_url("assets/images/cuti/".$all->filename).'"  target="_blank">View</a>';
+			}
+		
 		$daftartembusan = $this->cuti_model->get_by_tembusan($all->id);
 		$this->table->add_row(
 			anchor('cetak/cetak/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
-			'<a href="'.site_url("cuti/upload/".$all->id).'" class="fa fa-upload">&nbsp;</a>',
-			'<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />',
+			$upload,
+			$approve,
 			$all->nomor,
 			$all->nama,
 			$all->nip,
@@ -115,7 +133,7 @@ class Cuti extends CI_Controller {
 			$all->lama,
 			$all->alasancuti,
 			anchor('cuti/update/'.$all->id,'&nbsp;',array('class'=>'fa fa-pencil')),
-			anchor('cuti/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"))
+			$delete
 		);
 	}
 	$data['table']=$this->table->generate();
@@ -364,6 +382,7 @@ class Cuti extends CI_Controller {
 		$this->table->set_template($tmpl); 
 		$this->table->set_heading(
 		'Print',
+		'Upload',
 		'Approve',
 		'Nomor',
 		'Nama',
@@ -379,10 +398,28 @@ class Cuti extends CI_Controller {
 	);
 	$max_char=45;
 	foreach ($alls as $all){
+		$upload="";
+		$approve="";
+		
+		if($this->user=="admin"){
+			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
+			$delete=anchor('cuti/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+		}else{
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$delete="&nbsp;";
+		}
+		
+		if($all->upload==""){
+			$upload='<a href="'.site_url("cuti/upload/".$all->id).'" class="fa fa-upload">&nbsp;</a>';
+		}else{
+			$upload='<a href="'.site_url("assets/images/cuti/".$all->filename).'"  target="_blank">View</a>';
+			}
+			
 		$daftartembusan = $this->cuti_model->get_by_tembusan($all->id);
 		$this->table->add_row(
 			anchor('cetak/cetak/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
-			'<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />',
+			$upload,
+			$approve,
 			$all->nomor,
 			$all->nama,
 			$all->nip,
@@ -393,7 +430,7 @@ class Cuti extends CI_Controller {
 			$all->lama,
 			$all->alasancuti,
 			anchor('cuti/update/'.$all->id,'&nbsp;',array('class'=>'fa fa-pencil')),
-			anchor('cuti/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"))
+			$delete
 		);
 	}
 	$data['table']=$this->table->generate();

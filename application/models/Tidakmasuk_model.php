@@ -32,6 +32,8 @@ function get_by_all(){
 				'surattidakmasuk.approve',
 				'surattidakmasuk.verif1',
 				'surattidakmasuk.verif2',
+				'surattidakmasuk.upload',
+				'surattidakmasuk.filename',
 				'date(surattidakmasuk.tanggal) as tanggal'
 			);
 	$this->db->select($select);    
@@ -75,6 +77,8 @@ function get_by_id($id){
 				'surattidakmasuk.approve',
 				'surattidakmasuk.verif1',
 				'surattidakmasuk.verif2',
+				'surattidakmasuk.upload',
+				'surattidakmasuk.filename',
 				'date(surattidakmasuk.tanggal) as tanggal'
 			);
 	$this->db->select($select);
@@ -103,6 +107,8 @@ function get_by_tanggal($from,$to){
 				'surattidakmasuk.approve',
 				'surattidakmasuk.verif1',
 				'surattidakmasuk.verif2',
+				'surattidakmasuk.upload',
+				'surattidakmasuk.filename',
 				'date(surattidakmasuk.tanggal) as tanggal'
 			);
 	$this->db->select($select);
@@ -133,6 +139,8 @@ function get_by_tanggal_user($from,$to,$user){
 				'surattidakmasuk.approve',
 				'surattidakmasuk.verif1',
 				'surattidakmasuk.verif2',
+				'surattidakmasuk.upload',
+				'surattidakmasuk.filename',
 				'date(surattidakmasuk.tanggal) as tanggal'
 			);
 	$this->db->select($select);
@@ -164,6 +172,8 @@ function get_paged_list($limit=10,$offset=0,$order_column='',$order_type='asc',$
 				'surattidakmasuk.approve',
 				'surattidakmasuk.verif1',
 				'surattidakmasuk.verif2',
+				'surattidakmasuk.upload',
+				'surattidakmasuk.filename',
 				'date(surattidakmasuk.tanggal) as tanggal'
 			);
 	$this->db->select($select);    
@@ -201,6 +211,8 @@ function get_paged_list_user($limit=10,$offset=0,$order_column='',$order_type='a
 				'surattidakmasuk.approve',
 				'surattidakmasuk.verif1',
 				'surattidakmasuk.verif2',
+				'surattidakmasuk.upload',
+				'surattidakmasuk.filename',
 				'date(surattidakmasuk.tanggal) as tanggal'
 			);
 	$this->db->select($select);    
@@ -238,6 +250,8 @@ function get_by_detail_id($id){
 				'surattidakmasuk.approve',
 				'surattidakmasuk.verif1',
 				'surattidakmasuk.verif2',
+				'surattidakmasuk.upload',
+				'surattidakmasuk.filename',
 				'date(surattidakmasuk.tanggal) as tanggal'
 			);
 	$where=array(
@@ -251,7 +265,38 @@ function get_by_detail_id($id){
 	$this->db->order_by('dari asc');
 	return $this->db->get();
 }
-
+// Fungsi untuk melakukan proses upload file
+  public function upload(){
+    $config['upload_path'] = './assets/images/tidakmasuk/';
+    $config['allowed_types'] = 'jpg|png|jpeg';
+    $config['max_size']	= '2048';
+    $config['remove_space'] = TRUE;
+  
+    $this->load->library('upload', $config); // Load konfigurasi uploadnya
+	$this->upload->initialize($config);
+    if($this->upload->do_upload("input_gambar")){ // Lakukan upload dan Cek jika proses upload berhasil
+      // Jika berhasil :
+      $return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
+      return $return;
+    }else{
+      // Jika gagal :
+      $return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
+      return $return;
+    }
+  }
+  
+  // Fungsi untuk menyimpan data ke database
+  public function gambarsave($upload,$id){
+	  rename("./assets/images/tidakmasuk/".$upload['file']['file_name'],"./assets/images/tidakmasuk/".$id.".".strtolower(end(explode('.',$upload['file']['file_name']))));
+    $data = array(
+      'filename'=>$id.".".strtolower(end(explode('.',$upload['file']['file_name']))),
+	  'upload'=>date('Y-m-d H:i:s')
+    );
+	
+	$this->db->where($this->primary_key,$id);
+    $this->db->update('surattidakmasuk', $data);
+  }
+  
 function add($data){
 	$this->db->insert($this->table_name,$data);
 	return $this->db->insert_id();

@@ -17,6 +17,7 @@ class Tidakmasuk extends CI_Controller {
 		$this->id = $sess->id;
 		$this->nama = $sess->nama;
 		$this->akses = $sess->akses;
+		$this->user = $sess->user;
 		
 		$this->data['id'] = $sess->id;
 		$this->data['user'] = $sess->user;
@@ -83,6 +84,7 @@ class Tidakmasuk extends CI_Controller {
 		$new_order=($order_type=='asc'?'desc':'asc');
 		$this->table->set_heading(
 		'Print',
+		'Upload',
 		'Approve',
 		anchor('tidakmasuk/index/'.$offset.'/nomor/'.$new_order."/".$where,'Nomor'),
 		anchor('tidakmasuk/index/'.$offset.'/nama/'.$new_order."/".$where,'Nama'),
@@ -97,9 +99,27 @@ class Tidakmasuk extends CI_Controller {
 	$i=0+$offset;
 	$max_char=45;
 	foreach ($alls as $all){
+		$upload="";
+		$approve="";
+		
+		if($this->user=="admin"){
+			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
+			$delete=anchor('tidakmasuk/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+		}else{
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$delete="&nbsp;";
+		}
+		
+		if($all->upload==""){
+			$upload='<a href="'.site_url("tidakmasuk/upload/".$all->id).'" class="fa fa-upload">&nbsp;</a>';
+		}else{
+			$upload='<a href="'.site_url("assets/images/tidakmasuk/".$all->filename).'"  target="_blank">View</a>';
+			}
+			
 		$this->table->add_row(
 			anchor('cetak/tidakmasuk/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
-			'<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />',
+			$upload,
+			$approve,
 			$all->nomor,
 			$all->nama,
 			$all->nip,
@@ -108,7 +128,7 @@ class Tidakmasuk extends CI_Controller {
 			date('d-M-y',strtotime($all->tanggal)),
 			$all->alasantidakmasuk,
 			anchor('tidakmasuk/update/'.$all->id,'&nbsp;',array('class'=>'fa fa-pencil')),
-			anchor('tidakmasuk/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"))
+			$delete
 		);
 	}
 	$data['table']=$this->table->generate();
@@ -198,6 +218,29 @@ class Tidakmasuk extends CI_Controller {
 		$this->load->view('tidakmasuk/add.php',$data);
 	}
 	
+	function upload(){
+		
+		$data=$this->data;
+		
+		$data['akses']=$this->akses;
+		$data['karyawans'] = $this->karyawan_model->get_by_all()->result();
+		$alls=$this->tidakmasuk_model->get_by_id($this->uri->segment(3))->result();
+		foreach ($alls as $value) {
+			$hasil=(object)array(
+							'id'=>$value->id,
+							'karyawan'=>$value->karyawan,
+							'nomor'=>$value->nomor,
+							'tanggal'=>$value->tanggal,
+							'tglkeluar'=>$value->tglkeluar,
+							'atasan'=>$value->atasan,
+							'alasantidakmasuk'=>$value->alasantidakmasuk
+						);
+		}
+		
+		$data['tidakmasuk']=$hasil;
+		$this->load->view('tidakmasuk/upload.php',$data);
+	}
+	
 	public function approve()
 	{
 		$acc = $this->uri->segment(4);
@@ -275,6 +318,7 @@ class Tidakmasuk extends CI_Controller {
 		$this->table->set_template($tmpl); 
 		$this->table->set_heading(
 		'Print',
+		'Upload',
 		'Approve',
 		'Nomor',
 		'Nama',
@@ -287,9 +331,27 @@ class Tidakmasuk extends CI_Controller {
 	);
 	$max_char=45;
 	foreach ($alls as $all){
+		$upload="";
+		$approve="";
+		
+		if($this->user=="admin"){
+			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
+			$delete=anchor('tidakmasuk/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+		}else{
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$delete="&nbsp;";
+		}
+		
+		if($all->upload==""){
+			$upload='<a href="'.site_url("tidakmasuk/upload/".$all->id).'" class="fa fa-upload">&nbsp;</a>';
+		}else{
+			$upload='<a href="'.site_url("assets/images/tidakmasuk/".$all->filename).'"  target="_blank">View</a>';
+			}
+			
 		$this->table->add_row(
 			anchor('cetak/tidakmasuk/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
-			'<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />',
+			$upload,
+			$approve,
 			$all->nomor,
 			$all->nama,
 			$all->nip,
@@ -297,7 +359,7 @@ class Tidakmasuk extends CI_Controller {
 			date('d-M-y',strtotime($all->tanggal)),
 			$all->alasantidakmasuk,
 			anchor('tidakmasuk/update/'.$all->id,'&nbsp;',array('class'=>'fa fa-pencil')),
-			anchor('tidakmasuk/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"))
+			$delete
 		);
 	}
 	$data['table']=$this->table->generate();
@@ -320,6 +382,28 @@ class Tidakmasuk extends CI_Controller {
 		$this->ciqrcode->generate($params);
 	}
 	
+	public function uploadsave(){
+    
+      // lakukan upload file dengan memanggil function upload yang ada di GambarModel.php
+	  
+		$id = $this->input->post("id");
+      $upload = $this->tidakmasuk_model->upload();
+      if($upload['result'] == "success"){ // Jika proses upload sukses
+         // Panggil function save yang ada di GambarModel.php untuk menyimpan data ke database
+        $this->tidakmasuk_model->gambarsave($upload,$id);
+		//echo "success";
+		
+		redirect($this->agent->referrer(), 'refresh');
+        
+        //redirect('gambar'); // Redirect kembali ke halaman awal / halaman view data
+      }else{ // Jika proses upload gagal
+        $data['message'] = $upload['error']; // Ambil pesan error uploadnya untuk dikirim ke file form dan ditampilkan
+		echo $data['message'];
+      }
+    
+    
+    //$this->load->view('gambar/form', $data);
+  }
 	
 	
 }

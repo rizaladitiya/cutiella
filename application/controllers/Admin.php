@@ -14,6 +14,7 @@ class Admin extends CI_Controller {
 		$this->id = $sess->id;
 		$this->nama = $sess->nama;
 		$this->akses = $sess->akses;
+		$this->user = $sess->user;
 		
 		$this->data['id'] = $sess->id;
 		$this->data['user'] = $sess->user;

@@ -36,6 +36,8 @@ function get_by_all(){
 				'suratcuti.approve',
 				'suratcuti.verif1',
 				'suratcuti.verif2',
+				'suratcuti.upload',
+				'suratcuti.filename',
 				'macamcuti.nama as namamacamcuti',
 				'date(suratcuti.dari) as dari',
 				'date(suratcuti.hingga) as hingga'
@@ -213,6 +215,8 @@ function get_by_id($id){
 				'suratcuti.approve',
 				'suratcuti.verif1',
 				'suratcuti.verif2',
+				'suratcuti.upload',
+				'suratcuti.filename',
 				'macamcuti.nama as namamacamcuti',
 				'date(suratcuti.dari) as dari',
 				'date(suratcuti.hingga) as hingga'
@@ -247,6 +251,8 @@ function get_by_tanggal($from,$to){
 				'suratcuti.approve',
 				'suratcuti.verif1',
 				'suratcuti.verif2',
+				'suratcuti.upload',
+				'suratcuti.filename',
 				'macamcuti.nama as namamacamcuti',
 				'date(suratcuti.dari) as dari',
 				'date(suratcuti.hingga) as hingga'
@@ -282,6 +288,8 @@ function get_by_tanggal_user($from,$to,$user){
 				'suratcuti.approve',
 				'suratcuti.verif1',
 				'suratcuti.verif2',
+				'suratcuti.upload',
+				'suratcuti.filename',
 				'macamcuti.nama as namamacamcuti',
 				'date(suratcuti.dari) as dari',
 				'date(suratcuti.hingga) as hingga'
@@ -336,6 +344,8 @@ function get_paged_list($limit=10,$offset=0,$order_column='',$order_type='asc',$
 				'suratcuti.approve',
 				'suratcuti.verif1',
 				'suratcuti.verif2',
+				'suratcuti.upload',
+				'suratcuti.filename',
 				'macamcuti.nama as namamacamcuti',
 				'date(suratcuti.dari) as dari',
 				'date(suratcuti.hingga) as hingga'
@@ -379,6 +389,8 @@ function get_paged_list_user($limit=10,$offset=0,$order_column='',$order_type='a
 				'suratcuti.approve',
 				'suratcuti.verif1',
 				'suratcuti.verif2',
+				'suratcuti.upload',
+				'suratcuti.filename',
 				'macamcuti.nama as namamacamcuti',
 				'date(suratcuti.dari) as dari',
 				'date(suratcuti.hingga) as hingga'
@@ -422,6 +434,8 @@ function get_by_detail_id($id){
 				'suratcuti.approve',
 				'suratcuti.verif1',
 				'suratcuti.verif2',
+				'suratcuti.upload',
+				'suratcuti.filename',
 				'macamcuti.nama as namamacamcuti',
 				'date(suratcuti.dari) as dari',
 				'date(suratcuti.hingga) as hingga'
@@ -461,7 +475,7 @@ function get_by_total_cuti($year,$idcuti,$id){
 
 // Fungsi untuk melakukan proses upload file
   public function upload(){
-    $config['upload_path'] = './assets/images/';
+    $config['upload_path'] = './assets/images/cuti/';
     $config['allowed_types'] = 'jpg|png|jpeg';
     $config['max_size']	= '2048';
     $config['remove_space'] = TRUE;
@@ -481,7 +495,7 @@ function get_by_total_cuti($year,$idcuti,$id){
   
   // Fungsi untuk menyimpan data ke database
   public function gambarsave($upload,$id){
-	  rename("./assets/images/".$upload['file']['file_name'],"./assets/images/".$id.".".strtolower(end(explode('.',$upload['file']['file_name']))));
+	  rename("./assets/images/cuti/".$upload['file']['file_name'],"./assets/images/cuti/".$id.".".strtolower(end(explode('.',$upload['file']['file_name']))));
     $data = array(
       'filename'=>$id.".".strtolower(end(explode('.',$upload['file']['file_name']))),
 	  'upload'=>date('Y-m-d H:i:s')

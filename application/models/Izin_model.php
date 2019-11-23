@@ -36,6 +36,8 @@ function get_by_all(){
 				'suratizin.approve',
 				'suratizin.verif1',
 				'suratizin.verif2',
+				'suratizin.upload',
+				'suratizin.filename',
 				'date(suratizin.tanggal) as tanggal'
 			);
 	$this->db->select($select);    
@@ -84,6 +86,8 @@ function get_by_id($id){
 				'suratizin.approve',
 				'suratizin.verif1',
 				'suratizin.verif2',
+				'suratizin.upload',
+				'suratizin.filename',
 				'date(suratizin.tanggal) as tanggal'
 			);
 	$this->db->select($select);
@@ -117,6 +121,8 @@ function get_by_tanggal($from,$to){
 				'suratizin.approve',
 				'suratizin.verif1',
 				'suratizin.verif2',
+				'suratizin.upload',
+				'suratizin.filename',
 				'date(suratizin.tanggal) as tanggal'
 			);
 	$this->db->select($select);
@@ -152,6 +158,8 @@ function get_by_tanggal_user($from,$to,$user){
 				'suratizin.approve',
 				'suratizin.verif1',
 				'suratizin.verif2',
+				'suratizin.upload',
+				'suratizin.filename',
 				'date(suratizin.tanggal) as tanggal'
 			);
 	$this->db->select($select);
@@ -188,6 +196,8 @@ function get_paged_list($limit=10,$offset=0,$order_column='',$order_type='asc',$
 				'suratizin.approve',
 				'suratizin.verif1',
 				'suratizin.verif2',
+				'suratizin.upload',
+				'suratizin.filename',
 				'date(suratizin.tanggal) as tanggal'
 			);
 	$this->db->select($select);    
@@ -230,6 +240,8 @@ function get_paged_list_user($limit=10,$offset=0,$order_column='',$order_type='a
 				'suratizin.approve',
 				'suratizin.verif1',
 				'suratizin.verif2',
+				'suratizin.upload',
+				'suratizin.filename',
 				'date(suratizin.tanggal) as tanggal'
 			);
 	$this->db->select($select);    
@@ -272,6 +284,8 @@ function get_by_detail_id($id){
 				'suratizin.approve',
 				'suratizin.verif1',
 				'suratizin.verif2',
+				'suratizin.upload',
+				'suratizin.filename',
 				'date(suratizin.tanggal) as tanggal'
 			);
 	$where=array(
@@ -286,6 +300,37 @@ function get_by_detail_id($id){
 	$this->db->order_by('dari asc');
 	return $this->db->get();
 }
+// Fungsi untuk melakukan proses upload file
+  public function upload(){
+    $config['upload_path'] = './assets/images/izin/';
+    $config['allowed_types'] = 'jpg|png|jpeg';
+    $config['max_size']	= '2048';
+    $config['remove_space'] = TRUE;
+  
+    $this->load->library('upload', $config); // Load konfigurasi uploadnya
+	$this->upload->initialize($config);
+    if($this->upload->do_upload("input_gambar")){ // Lakukan upload dan Cek jika proses upload berhasil
+      // Jika berhasil :
+      $return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
+      return $return;
+    }else{
+      // Jika gagal :
+      $return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
+      return $return;
+    }
+  }
+  
+  // Fungsi untuk menyimpan data ke database
+  public function gambarsave($upload,$id){
+	  rename("./assets/images/izin/".$upload['file']['file_name'],"./assets/images/izin/".$id.".".strtolower(end(explode('.',$upload['file']['file_name']))));
+    $data = array(
+      'filename'=>$id.".".strtolower(end(explode('.',$upload['file']['file_name']))),
+	  'upload'=>date('Y-m-d H:i:s')
+    );
+	
+	$this->db->where($this->primary_key,$id);
+    $this->db->update('suratizin', $data);
+  }
 function get_alasan_izin(){
 	$select=array(
 				$this->primary_key,
