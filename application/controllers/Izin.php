@@ -41,7 +41,7 @@ class Izin extends CI_Controller {
 		if (empty($order_column)) $order_column='id';
 		if (empty($order_type)) $order_type='asc';
 		//TODO: check for valid column
-		if($this->akses=="admin"){
+		if($this->akses=="admin" or $this->akses=="VERIFY1"){
 			$alls=$this->izin_model->get_paged_list($this->limit,
 			$offset,$order_column,$order_type,$where)->result();
 		}else{
@@ -82,6 +82,7 @@ class Izin extends CI_Controller {
 		$new_order=($order_type=='asc'?'desc':'asc');
 		$this->table->set_heading(
 		'Print',
+		'Verif',
 		'Upload',
 		'Approve',
 		anchor('izin/index/'.$offset.'/nomor/'.$new_order."/".$where,'Nomor'),
@@ -99,12 +100,19 @@ class Izin extends CI_Controller {
 	foreach ($alls as $all){
 		$upload="";
 		$approve="";
+		$verif1="";
 		
 		if($this->user=="admin"){
 			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
 			$delete=anchor('izin/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
+		}else if($this->user=="verif1"){
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$verif1='<input type="checkbox" name="verif1[]" id="verif1[]" value="'.$all->id.'" class="verif1" '.(($all->verif1==1)?' checked':'').' />';
+			$delete="&nbsp;";
 		}else{
 			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
 			$delete="&nbsp;";
 		}
 		
@@ -117,6 +125,7 @@ class Izin extends CI_Controller {
 		$this->table->add_row(
 			anchor('cetak/izin/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
 			$upload,
+			$verif1,
 			$approve,
 			$all->nomor,
 			$all->nama,
@@ -152,7 +161,8 @@ class Izin extends CI_Controller {
 							'alasan'=>$this->input->post('alasan'),
 							'approve'=>0,
 							'verif1'=>0,
-							'verif2'=>0
+							'verif2'=>0,
+							'filename'=>''
 							);
 			$id = $this->input->post('id');
 			if($id==0){
@@ -193,7 +203,8 @@ class Izin extends CI_Controller {
 										'hingga'=>'',
 										'alasanizin'=>'',
 										'atasan'=>'',
-										'alasan'=>''
+										'alasan'=>'',
+										'filename'=>''
 									);
 				
 			}
@@ -287,7 +298,7 @@ class Izin extends CI_Controller {
 		}else{
 			$data['hingga']=sekarang();
 		}
-		if($this->akses=="admin"){
+		if($this->akses=="admin" or $this->akses=="VERIFY1"){
 		$alls=$this->izin_model->get_by_tanggal($data['dari'],$data['hingga'])->result();
 		}else{
 		$alls=$this->izin_model->get_by_tanggal_user($data['dari'],$data['hingga'],$this->id)->result();
@@ -324,6 +335,7 @@ class Izin extends CI_Controller {
 		$this->table->set_heading(
 		'Print',
 		'Upload',
+		'Verif',
 		'Approve',
 		'Nomor',
 		'Nama',
@@ -340,12 +352,18 @@ class Izin extends CI_Controller {
 	foreach ($alls as $all){
 		$upload="";
 		$approve="";
-		
+		$verif1="";
 		if($this->user=="admin"){
 			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
 			$delete=anchor('izin/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
+		}else if($this->user=="verif1"){
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$verif1='<input type="checkbox" name="verif1[]" id="verif1[]" value="'.$all->id.'" class="verif1" '.(($all->verif1==1)?' checked':'').' />';
+			$delete="&nbsp;";
 		}else{
 			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
 			$delete="&nbsp;";
 		}
 		
@@ -358,6 +376,7 @@ class Izin extends CI_Controller {
 		$this->table->add_row(
 			anchor('cetak/izin/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
 			$upload,
+			$verif,
 			$approve,
 			$all->nomor,
 			$all->nama,

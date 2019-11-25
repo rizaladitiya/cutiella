@@ -41,7 +41,7 @@ class Cuti extends CI_Controller {
 		if (empty($order_column)) $order_column='id';
 		if (empty($order_type)) $order_type='asc';
 		//TODO: check for valid column
-		if($this->akses=="admin"){
+		if($this->akses=="admin" or $this->akses=="VERIFY1"){
 		$alls=$this->cuti_model->get_paged_list($this->limit,
 		$offset,$order_column,$order_type,$where)->result();
 		}else{
@@ -83,6 +83,7 @@ class Cuti extends CI_Controller {
 		$this->table->set_heading(
 		'Print',
 		'Upload',
+		'Verif',
 		'Approve',
 		anchor('cuti/index/'.$offset.'/nomor/'.$new_order."/".$where,'Nomor'),
 		anchor('cuti/index/'.$offset.'/nama/'.$new_order."/".$where,'Nama'),
@@ -102,12 +103,19 @@ class Cuti extends CI_Controller {
 	foreach ($alls as $all){
 		$upload="";
 		$approve="";
+		$verif1="";
 		
 		if($this->user=="admin"){
 			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
 			$delete=anchor('cuti/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
+		}else if($this->user=="verif1"){
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$verif1='<input type="checkbox" name="verif1[]" id="verif1[]" value="'.$all->id.'" class="verif1" '.(($all->verif1==1)?' checked':'').' />';
+			$delete="&nbsp;";
 		}else{
 			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
 			$delete="&nbsp;";
 		}
 		
@@ -121,6 +129,7 @@ class Cuti extends CI_Controller {
 		$this->table->add_row(
 			anchor('cetak/cetak/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
 			$upload,
+			$verif1,
 			$approve,
 			$all->nomor,
 			$all->nama,
@@ -160,7 +169,8 @@ class Cuti extends CI_Controller {
 							'tglkeluar'=>$this->input->post('tglkeluar'),
 							'approve'=>0,
 							'verif1'=>0,
-							'verif2'=>0
+							'verif2'=>0,
+							'filename'=>''
 							);
 			$id = $this->input->post('id');
 			$tembusan = $this->input->post('tembusan');
@@ -215,7 +225,8 @@ class Cuti extends CI_Controller {
 										'tembusan'=>0,
 										'atasan'=>'',
 										'nomerhp'=>'',
-										'alamatcuti'=>''
+										'alamatcuti'=>'',
+										'filename'=>''
 									);
 				
 			}
@@ -346,7 +357,7 @@ class Cuti extends CI_Controller {
 			$data['hingga']=sekarang();
 		}
 		
-		if($this->akses=="admin"){
+		if($this->akses=="admin" or $this->akses=="VERIFY1"){
 		$alls=$this->cuti_model->get_by_tanggal($data['dari'],$data['hingga'])->result();
 		}else{
 		$alls=$this->cuti_model->get_by_tanggal_user($data['dari'],$data['hingga'],$this->id)->result();
@@ -383,6 +394,7 @@ class Cuti extends CI_Controller {
 		$this->table->set_heading(
 		'Print',
 		'Upload',
+		'Verif',
 		'Approve',
 		'Nomor',
 		'Nama',
@@ -400,12 +412,19 @@ class Cuti extends CI_Controller {
 	foreach ($alls as $all){
 		$upload="";
 		$approve="";
+		$verif1="";
 		
 		if($this->user=="admin"){
 			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
 			$delete=anchor('cuti/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
+		}else if($this->user=="verif1"){
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$verif1='<input type="checkbox" name="verif1[]" id="verif1[]" value="'.$all->id.'" class="verif1" '.(($all->verif1==1)?' checked':'').' />';
+			$delete="&nbsp;";
 		}else{
 			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
 			$delete="&nbsp;";
 		}
 		
@@ -419,6 +438,7 @@ class Cuti extends CI_Controller {
 		$this->table->add_row(
 			anchor('cetak/cetak/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
 			$upload,
+			$verif1,
 			$approve,
 			$all->nomor,
 			$all->nama,

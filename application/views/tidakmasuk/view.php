@@ -145,6 +145,32 @@ $(function () {
 				}
 			}
 		});
+		$(".verif1").change(function() {
+			
+			var id = $(this).attr('value');
+			var konfirm;
+			
+    		if(this.checked) {
+        		//Do stuff
+				konfirm = confirm("Apa anda ingin verivikasi?");
+				if(konfirm){
+				$.get( "<?=base_url('tidakmasuk')?>/verif1/"+id+"/1", function( data ) {
+				  //alert( "Data Loaded: " + data );
+				});
+				} else {
+					$(this).prop('checked', false);
+				}
+    		} else {
+				konfirm = confirm("Apa anda ingin membatalkan verifikasi?");
+				if(konfirm){
+				$.get( "<?=base_url('tidakmasuk')?>/verif1/"+id+"/0", function( data ) {
+				  //alert( "Data Loaded: " + data );
+				});	
+				}else{
+					$(this).prop('checked', true);
+				}
+			}
+		});
 });
 </script>
 <?php

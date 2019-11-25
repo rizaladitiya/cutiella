@@ -43,7 +43,7 @@ class Tidakmasuk extends CI_Controller {
 		if (empty($order_type)) $order_type='asc';
 		//TODO: check for valid column
 		
-		if($this->akses=="admin"){
+		if($this->akses=="admin" or $this->akses=="VERIFY1"){
 		$alls=$this->tidakmasuk_model->get_paged_list($this->limit,
 		$offset,$order_column,$order_type,$where)->result();
 		}else{
@@ -84,6 +84,7 @@ class Tidakmasuk extends CI_Controller {
 		$new_order=($order_type=='asc'?'desc':'asc');
 		$this->table->set_heading(
 		'Print',
+		'Verif',
 		'Upload',
 		'Approve',
 		anchor('tidakmasuk/index/'.$offset.'/nomor/'.$new_order."/".$where,'Nomor'),
@@ -101,12 +102,19 @@ class Tidakmasuk extends CI_Controller {
 	foreach ($alls as $all){
 		$upload="";
 		$approve="";
+		$verif1="";
 		
 		if($this->user=="admin"){
 			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
 			$delete=anchor('tidakmasuk/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+		(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
+		}else if($this->user=="verif1"){
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$verif1='<input type="checkbox" name="verif1[]" id="verif1[]" value="'.$all->id.'" class="verif1" '.(($all->verif1==1)?' checked':'').' />';
+			$delete="&nbsp;";
 		}else{
 			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
 			$delete="&nbsp;";
 		}
 		
@@ -119,6 +127,7 @@ class Tidakmasuk extends CI_Controller {
 		$this->table->add_row(
 			anchor('cetak/tidakmasuk/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
 			$upload,
+			$verif1,
 			$approve,
 			$all->nomor,
 			$all->nama,
@@ -150,7 +159,8 @@ class Tidakmasuk extends CI_Controller {
 							'tglkeluar'=>$this->input->post('tglkeluar'),
 							'approve'=>0,
 							'verif1'=>0,
-							'verif2'=>0
+							'verif2'=>0,
+							'filename'=>''
 							);
 			$id = $this->input->post('id');
 			if($id==0){
@@ -189,7 +199,8 @@ class Tidakmasuk extends CI_Controller {
 										'hingga'=>'',
 										'tglkeluar'=>'',
 										'alasantidakmasuk'=>'',
-										'atasan'=>''
+										'atasan'=>'',
+										'filename'=>''
 									);
 				
 			}
@@ -282,7 +293,7 @@ class Tidakmasuk extends CI_Controller {
 		}else{
 			$data['hingga']=sekarang();
 		}
-		if($this->akses=="admin"){
+		if($this->akses=="admin" or $this->akses=="VERIFY1"){
 		$alls=$this->tidakmasuk_model->get_by_tanggal($data['dari'],$data['hingga'])->result();
 		}else{
 		$alls=$this->tidakmasuk_model->get_by_tanggal_user($data['dari'],$data['hingga'],$this->id)->result();
@@ -318,6 +329,7 @@ class Tidakmasuk extends CI_Controller {
 		$this->table->set_template($tmpl); 
 		$this->table->set_heading(
 		'Print',
+		'Verif',
 		'Upload',
 		'Approve',
 		'Nomor',
@@ -333,12 +345,19 @@ class Tidakmasuk extends CI_Controller {
 	foreach ($alls as $all){
 		$upload="";
 		$approve="";
+		$verif1="";
 		
 		if($this->user=="admin"){
 			$approve='<input type="checkbox" name="approve[]" id="approve[]" value="'.$all->id.'" class="minimal" '.(($all->approve==1)?' checked':'').' />';
 			$delete=anchor('tidakmasuk/delete/'.$all->id,'&nbsp;',array('class'=>'fa fa-trash','onclick'=>"return confirm('Apakah Anda yakin ingin menghapus ".$all->nama." ".$all->nomor."?')"));
+		(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
+		}else if($this->user=="verif1"){
+			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			$verif1='<input type="checkbox" name="verif1[]" id="verif1[]" value="'.$all->id.'" class="verif1" '.(($all->verif1==1)?' checked':'').' />';
+			$delete="&nbsp;";
 		}else{
 			(($all->approve==1)?$approve=givecheck(1):$approve='');
+			(($all->verif1==1)?$verif1=givecheck(1):$verif1='');
 			$delete="&nbsp;";
 		}
 		
@@ -351,6 +370,7 @@ class Tidakmasuk extends CI_Controller {
 		$this->table->add_row(
 			anchor('cetak/tidakmasuk/'.$all->id,'&nbsp;',array('class'=>'fa fa-print', "target"=>"_blank")),
 			$upload,
+			$verif1,
 			$approve,
 			$all->nomor,
 			$all->nama,

@@ -268,7 +268,7 @@ function get_by_detail_id($id){
 // Fungsi untuk melakukan proses upload file
   public function upload(){
     $config['upload_path'] = './assets/images/tidakmasuk/';
-    $config['allowed_types'] = 'jpg|png|jpeg';
+    $config['allowed_types'] = 'jpg|png|jpeg|pdf';
     $config['max_size']	= '2048';
     $config['remove_space'] = TRUE;
   

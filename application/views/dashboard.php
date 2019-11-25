@@ -97,6 +97,10 @@ if($akses=='admin'){
 
 <!-- Main content -->
 <section class="content">
+<?php 
+if($user!="admin" and $user!="verif1")
+{
+?>
   <div class="row">
   
 	<div class="col-md-3 col-sm-6 col-xs-12">
@@ -134,7 +138,7 @@ if($akses=='admin'){
 	</div>
 	
 	</div> 
-  
+  <?php } ?>
   
 </section><!-- /.content -->
 
