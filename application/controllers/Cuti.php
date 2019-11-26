@@ -485,7 +485,8 @@ class Cuti extends CI_Controller {
         $this->cuti_model->gambarsave($upload,$id);
 		//echo "success";
 		
-		redirect($this->agent->referrer(), 'refresh');
+		//redirect($this->agent->referrer(), 'refresh');
+		redirect('cuti', 'refresh');	
         
         //redirect('gambar'); // Redirect kembali ke halaman awal / halaman view data
       }else{ // Jika proses upload gagal

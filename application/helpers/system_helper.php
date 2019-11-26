@@ -452,7 +452,30 @@ if ( ! function_exists('terbilang'))
 			return $hasil;
 		}
 	}
-	
+	if(!function_exists('sembunyi'))
+	{
+		function sembunyi($kelompok)
+		{
+			$array=array('admin','verif1','verif2');
+			if (in_array($kelompok, $array)) {
+				return "style='display:none'";
+			}else {
+				return "";
+				}
+		}
+	}
+	if(!function_exists('tidaksembunyi'))
+	{
+		function tidaksembunyi($kelompok)
+		{
+			$array=array('admin','verif1','verif2');
+			if (in_array($kelompok, $array)) {
+				return "";
+			}else {
+				return "style='display:none'";
+				}
+		}
+	}
 	function em($word) {
 
     $word = str_replace("@","%40",$word);

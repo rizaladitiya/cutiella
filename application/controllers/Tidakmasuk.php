@@ -413,8 +413,9 @@ class Tidakmasuk extends CI_Controller {
         $this->tidakmasuk_model->gambarsave($upload,$id);
 		//echo "success";
 		
-		redirect($this->agent->referrer(), 'refresh');
+		//redirect($this->agent->referrer(), 'refresh');
         
+		redirect('tidakmasuk', 'refresh');	
         //redirect('gambar'); // Redirect kembali ke halaman awal / halaman view data
       }else{ // Jika proses upload gagal
         $data['message'] = $upload['error']; // Ambil pesan error uploadnya untuk dikirim ke file form dan ditampilkan

@@ -34,7 +34,7 @@ $email = $sess->email;
                     <i class="fa fa-calendar" ></i> <span>Surat Izin</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                	<li class="<?=$this->uri->segment('2')=="add"?'active':'';?>"><a href="<?php echo site_url('izin/add') ?>"><i class="fa fa-plus"></i> Add</a></li>
+                	<li class="<?=$this->uri->segment('2')=="add"?'active':'';?>"><a href="<?php echo site_url('izin/add') ?>" <?=sembunyi($user)?>><i class="fa fa-plus"></i> Add</a></li>
                     <li class="<?=$this->uri->segment('2')==""?'active':'';?>"><a href="<?php echo site_url('izin') ?>"><i class="fa fa-search"></i> View</a></li>
                     <li class="<?=$this->uri->segment('2')=="report"?'active':'';?>"><a href="<?php echo site_url('izin/report') ?>"><i class="fa fa-envelope"></i> Report</a></li>
                     
@@ -45,7 +45,7 @@ $email = $sess->email;
                     <i class="fa fa-calendar" ></i> <span>Surat Cuti</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                	<li class="<?=$this->uri->segment('2')=="add"?'active':'';?>"><a href="<?php echo site_url('cuti/add') ?>"><i class="fa fa-plus"></i> Add</a></li>
+                	<li class="<?=$this->uri->segment('2')=="add"?'active':'';?>"><a href="<?php echo site_url('cuti/add') ?>" <?=sembunyi($user)?>><i class="fa fa-plus"></i> Add</a></li>
                     <li class="<?=$this->uri->segment('2')==""?'active':'';?>"><a href="<?php echo site_url('cuti') ?>"><i class="fa fa-search"></i> View</a></li>
                     <li class="<?=$this->uri->segment('2')=="report"?'active':'';?>"><a href="<?php echo site_url('cuti/report') ?>"><i class="fa fa-envelope"></i> Report</a></li>
                     
@@ -56,7 +56,7 @@ $email = $sess->email;
                     <i class="fa fa-calendar" ></i> <span>Surat Tidak Masuk</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                	<li class="<?=$this->uri->segment('2')=="add"?'active':'';?>"><a href="<?php echo site_url('tidakmasuk/add') ?>"><i class="fa fa-plus"></i> Add</a></li>
+                	<li class="<?=$this->uri->segment('2')=="add"?'active':'';?>"><a href="<?php echo site_url('tidakmasuk/add') ?>" <?=sembunyi($user)?>><i class="fa fa-plus"></i> Add</a></li>
                     <li class="<?=$this->uri->segment('2')==""?'active':'';?>"><a href="<?php echo site_url('tidakmasuk') ?>"><i class="fa fa-search"></i> View</a></li>
                     <li class="<?=$this->uri->segment('2')=="report"?'active':'';?>"><a href="<?php echo site_url('tidakmasuk/report') ?>"><i class="fa fa-envelope"></i> Report</a></li>
                     
@@ -76,7 +76,7 @@ $email = $sess->email;
                 <a href="#">
                     <i class="fa fa-dashboard" ></i> <span>Setting</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu">
+                <ul class="treeview-menu" <?=tidaksembunyi($user)?>>
                 	<li class="<?=$this->uri->segment('1')=="user"?'active':'';?>"><a href="<?php echo site_url('user') ?>"><i class="fa fa-cog"></i> User</a></li>
                     <li class="<?=$this->uri->segment('1')=="program"?'active':'';?>"><a href="<?php echo site_url('setting') ?>"><i class="fa fa-bolt"></i>Program</a></li>
                 </ul>

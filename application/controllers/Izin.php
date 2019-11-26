@@ -421,8 +421,9 @@ class Izin extends CI_Controller {
         $this->izin_model->gambarsave($upload,$id);
 		//echo "success";
 		
-		redirect($this->agent->referrer(), 'refresh');
+		//redirect($this->agent->referrer(), 'refresh');
         
+		redirect('izin', 'refresh');	
         //redirect('gambar'); // Redirect kembali ke halaman awal / halaman view data
       }else{ // Jika proses upload gagal
         $data['message'] = $upload['error']; // Ambil pesan error uploadnya untuk dikirim ke file form dan ditampilkan
